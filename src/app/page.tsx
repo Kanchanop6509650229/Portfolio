@@ -1,9 +1,24 @@
+"use client";
+
 import 'animate.css';
-import Image from 'next/image';
+import { useScroll, useTransform, motion } from 'framer-motion';
+import { useRef } from 'react';
 
 export default function Home() {
+  const containerRef = useRef(null);
+  const targetRef = useRef(null);
+  
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start end", "end start"]
+  });
+
+  const x = useTransform(scrollYProgress, [0.15, 0.85], ["0%", "-75%"], {
+    clamp: true
+  });
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+    <main className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white" ref={containerRef}>
       {/* Hero Section with Name */}
       <section className="h-screen flex items-center justify-center text-center px-4 animate__animated animate__fadeIn">
         <div>
@@ -37,34 +52,83 @@ export default function Home() {
       </section>
 
       {/* Projects Section */}
-      <section className="py-20 px-4 bg-gray-800/50 animate__animated animate__fadeIn" id="projects">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold mb-12 text-center">My Projects</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              {
-                title: 'Project 1',
-                description: 'Description of your first project.',
-                tech: ['React', 'Node.js']
-              },
-              {
-                title: 'Project 2',
-                description: 'Description of your second project.',
-                tech: ['Python', 'Django']
-              }
-            ].map((project) => (
-              <div key={project.title} className="bg-gray-700/50 p-6 rounded-lg">
-                <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-                <p className="text-gray-300 mb-4">{project.description}</p>
-                <div className="flex gap-2">
-                  {project.tech.map((tech) => (
-                    <span key={tech} className="bg-gray-600 px-2 py-1 rounded text-sm">
-                      {tech}
-                    </span>
-                  ))}
+      <section 
+        ref={targetRef} 
+        className="relative h-[250vh] bg-gray-800/50" 
+        id="projects"
+      >
+        <div className="sticky top-20 h-screen flex items-center overflow-hidden">
+          <div className="max-w-[90vw] mx-auto">
+            <h2 className="text-4xl font-bold mb-12 text-center sticky left-0">My Projects</h2>
+            <motion.div 
+              style={{ x }} 
+              className="flex gap-6 pl-[5vw] will-change-transform"
+            >
+              {[
+                {
+                  title: 'E-Commerce Platform',
+                  description: 'A full-featured online shopping platform with cart, payments, and admin dashboard.',
+                  tech: ['Next.js', 'TypeScript', 'Stripe', 'MongoDB']
+                },
+                {
+                  title: 'AI Image Generator',
+                  description: 'Web application that generates images using AI models and allows sharing.',
+                  tech: ['React', 'Python', 'TensorFlow', 'FastAPI']
+                },
+                {
+                  title: 'Task Management App',
+                  description: 'Collaborative project management tool with real-time updates.',
+                  tech: ['Vue.js', 'Firebase', 'Tailwind']
+                },
+                {
+                  title: 'Social Media Dashboard',
+                  description: 'Analytics dashboard for social media management and metrics tracking.',
+                  tech: ['React', 'Redux', 'D3.js', 'Node.js']
+                },
+                {
+                  title: 'Fitness Tracking App',
+                  description: 'Mobile-first application for tracking workouts and nutrition.',
+                  tech: ['React Native', 'GraphQL', 'PostgreSQL']
+                },
+                {
+                  title: 'Real Estate Platform',
+                  description: 'Property listing and management system with virtual tours.',
+                  tech: ['Next.js', 'Three.js', 'Prisma', 'MySQL']
+                },
+                {
+                  title: 'Weather App',
+                  description: 'Real-time weather forecasting with interactive maps.',
+                  tech: ['React', 'OpenWeather API', 'Mapbox']
+                },
+                {
+                  title: 'Recipe Sharing Platform',
+                  description: 'Community-driven recipe sharing with AI-powered recommendations.',
+                  tech: ['Django', 'React', 'PostgreSQL', 'Redis']
+                },
+                {
+                  title: 'Music Streaming Service',
+                  description: 'Audio streaming platform with playlist management.',
+                  tech: ['Next.js', 'Web Audio API', 'MongoDB']
+                },
+                {
+                  title: 'Code Learning Platform',
+                  description: 'Interactive coding tutorials and challenges platform.',
+                  tech: ['Vue.js', 'Express', 'Docker', 'WebSocket']
+                }
+              ].map((project) => (
+                <div key={project.title} className="bg-gray-700/50 p-6 rounded-lg w-[400px] flex-shrink-0 hover:bg-gray-600/50 transition">
+                  <h3 className="text-xl font-bold mb-2">{project.title}</h3>
+                  <p className="text-gray-300 mb-4">{project.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tech.map((tech) => (
+                      <span key={tech} className="bg-gray-600 px-2 py-1 rounded text-sm">
+                        {tech}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
