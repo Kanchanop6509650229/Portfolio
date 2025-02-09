@@ -7,6 +7,8 @@ interface AboutSectionProps {
 }
 
 const AboutSection = ({ aboutRef, aboutY }: AboutSectionProps) => {
+  const orbitItems = [0, 1, 2, 3];
+
   return (
     <motion.section 
       ref={aboutRef}
@@ -15,18 +17,18 @@ const AboutSection = ({ aboutRef, aboutY }: AboutSectionProps) => {
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
         {/* Particle-like floating elements */}
-        {[...Array(8)].map((_, i) => (
+        {orbitItems.map((i) => (
           <motion.div
             key={i}
             className="absolute w-32 h-32 rounded-full bg-blue-500/5 blur-2xl"
             animate={{
               x: [
-                `${Math.sin(i * 45) * 50}%`,
-                `${Math.cos(i * 45) * 50}%`
+                `${Math.sin(i * 90) * 40}%`,  // Using fixed angle multiplier
+                `${Math.cos(i * 90) * 40}%`   // Using fixed angle multiplier
               ],
               y: [
-                `${Math.cos(i * 45) * 50}%`,
-                `${Math.sin(i * 45) * 50}%`
+                `${Math.cos(i * 90) * 40}%`,
+                `${Math.sin(i * 90) * 40}%`
               ],
               scale: [1, 1.2, 0.8, 1],
               opacity: [0.3, 0.6, 0.3],
@@ -38,8 +40,8 @@ const AboutSection = ({ aboutRef, aboutY }: AboutSectionProps) => {
               ease: "easeInOut",
             }}
             style={{
-              left: `${25 + Math.random() * 50}%`,
-              top: `${25 + Math.random() * 50}%`,
+              left: `${25 + (i * 15)}%`,  // Using index-based calculation
+              top: `${25 + (i * 12)}%`,   // Using index-based calculation
             }}
           />
         ))}

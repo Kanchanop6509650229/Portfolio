@@ -144,13 +144,13 @@ const ProjectsSection = () => {
               ],
             }}
             transition={{
-              duration: 3 + Math.random() * 2,
+              duration: 3 + (i % 3) * 2, // Using modulo for variation instead of random
               repeat: Infinity,
               delay: i * 0.3,
             }}
             style={{
-              left: `${20 + Math.random() * 60}%`,
-              top: `${20 + Math.random() * 60}%`,
+              left: `${20 + (i * 5)}%`,  // Using index-based calculation
+              top: `${20 + ((i * 7) % 60)}%`,  // Using modulo to keep within bounds
             }}
           />
         ))}
