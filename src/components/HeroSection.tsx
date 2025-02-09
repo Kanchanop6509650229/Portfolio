@@ -9,6 +9,7 @@ interface HeroSectionProps {
 const HeroSection = ({ heroRef, heroY }: HeroSectionProps) => {
   return (
     <motion.section 
+      id="top"
       ref={heroRef}
       style={{ y: heroY }}
       className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start py-20 px-4 flex items-center justify-center" 
