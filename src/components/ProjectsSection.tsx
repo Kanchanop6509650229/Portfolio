@@ -126,8 +126,76 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
 
 const ProjectsSection = () => {
   return (
-    <section className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start py-20 px-4" id="projects">
-      <div className="max-w-7xl mx-auto">
+    <section className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden" id="projects">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
+        {/* Constellation Points */}
+        {[...Array(12)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-indigo-400/30"
+            initial={{ opacity: 0.2 }}
+            animate={{
+              opacity: [0.2, 0.8, 0.2],
+              scale: [1, 1.5, 1],
+              boxShadow: [
+                '0 0 10px rgba(129, 140, 248, 0.3)',
+                '0 0 20px rgba(129, 140, 248, 0.5)',
+                '0 0 10px rgba(129, 140, 248, 0.3)',
+              ],
+            }}
+            transition={{
+              duration: 3 + Math.random() * 2,
+              repeat: Infinity,
+              delay: i * 0.3,
+            }}
+            style={{
+              left: `${20 + Math.random() * 60}%`,
+              top: `${20 + Math.random() * 60}%`,
+            }}
+          />
+        ))}
+
+        {/* Connecting Lines */}
+        <svg className="absolute inset-0 w-full h-full">
+          <motion.path
+            stroke="rgba(129, 140, 248, 0.1)"
+            strokeWidth="1"
+            fill="none"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+            d="M 100,100 L 300,150 L 200,300 L 400,250 Z"
+          />
+        </svg>
+
+        {/* Glowing Background Areas */}
+        <motion.div
+          className="absolute w-[60rem] h-[60rem] rounded-full"
+          animate={{
+            background: [
+              'radial-gradient(circle at center, rgba(99, 102, 241, 0.03) 0%, transparent 70%)',
+              'radial-gradient(circle at center, rgba(139, 92, 246, 0.03) 0%, transparent 70%)',
+            ],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
+          style={{
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10 w-full py-10">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

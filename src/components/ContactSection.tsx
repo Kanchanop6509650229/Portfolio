@@ -37,8 +37,148 @@ const contactData = [
 
 const ContactSection = () => {
   return (
-    <section className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start py-20 px-4" id="contact">
-      <div className="max-w-7xl mx-auto">
+    <section className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden" id="contact">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
+        {/* Circuit Lines */}
+        <svg className="absolute inset-0 w-full h-full">
+          {[...Array(4)].map((_, i) => (
+            <g key={i}>
+              <motion.path
+                d={`M ${100 + i * 200},${50 + i * 100} L ${200 + i * 150},${50 + i * 100} L ${250 + i * 150},${100 + i * 100} L ${350 + i * 150},${100 + i * 100}`}
+                stroke={`rgba(${i % 2 ? '244, 63, 94' : '236, 72, 153'}, 0.15)`}
+                strokeWidth="2"
+                fill="none"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{
+                  duration: 3,
+                  delay: i * 0.5,
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  ease: "linear"
+                }}
+              />
+              <motion.circle
+                cx={350 + i * 150}
+                cy={100 + i * 100}
+                r="4"
+                fill={`rgba(${i % 2 ? '244, 63, 94' : '236, 72, 153'}, 0.3)`}
+                initial={{ scale: 0 }}
+                animate={{
+                  scale: [0, 1.5, 0],
+                  opacity: [0, 1, 0]
+                }}
+                transition={{
+                  duration: 2,
+                  delay: i * 0.5 + 2,
+                  repeat: Infinity,
+                  repeatType: "loop",
+                }}
+              />
+            </g>
+          ))}
+        </svg>
+
+        {/* Pulsing Nodes */}
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-4 h-4 rounded-full"
+            initial={{ opacity: 0.3 }}
+            animate={{
+              opacity: [0.3, 0.7, 0.3],
+              boxShadow: [
+                '0 0 10px rgba(236, 72, 153, 0.3)',
+                '0 0 20px rgba(236, 72, 153, 0.5)',
+                '0 0 10px rgba(236, 72, 153, 0.3)'
+              ]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              delay: i * 0.3,
+            }}
+            style={{
+              background: 'rgba(236, 72, 153, 0.2)',
+              left: `${20 + (i * 15)}%`,
+              top: `${30 + ((i % 3) * 20)}%`,
+            }}
+          />
+        ))}
+
+        {/* Energy Wave */}
+        <motion.div
+          className="absolute inset-0"
+          animate={{
+            background: [
+              'radial-gradient(circle at 30% 30%, rgba(236, 72, 153, 0.03) 0%, transparent 50%)',
+              'radial-gradient(circle at 70% 70%, rgba(244, 63, 94, 0.03) 0%, transparent 50%)',
+            ]
+          }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute w-[48rem] h-[48rem] rounded-full bg-rose-500/5 blur-3xl"
+          animate={{
+            x: ["-20%", "20%"],
+            y: ["15%", "-15%"],
+            scale: [1, 1.15, 1],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+          }}
+          style={{
+            top: "5%",
+            right: "10%",
+          }}
+        />
+        <motion.div
+          className="absolute w-[42rem] h-[42rem] rounded-full bg-pink-500/5 blur-3xl"
+          animate={{
+            x: ["25%", "-25%"],
+            y: ["-20%", "20%"],
+            scale: [1.1, 1, 1.1],
+          }}
+          transition={{
+            duration: 13,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+          }}
+          style={{
+            bottom: "10%",
+            left: "5%",
+          }}
+        />
+        <motion.div
+          className="absolute w-[38rem] h-[38rem] rounded-full bg-red-500/5 blur-3xl"
+          animate={{
+            x: ["-15%", "15%"],
+            y: ["20%", "-20%"],
+            scale: [1.2, 1, 1.2],
+          }}
+          transition={{
+            duration: 11,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+          }}
+          style={{
+            top: "35%",
+            left: "30%",
+          }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10 w-full">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}

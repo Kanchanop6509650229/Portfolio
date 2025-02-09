@@ -10,16 +10,63 @@ const AboutSection = ({ aboutRef, aboutY }: AboutSectionProps) => {
   return (
     <motion.section 
       ref={aboutRef}
-      style={{ y: aboutY }}
-      className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start py-20 px-4" 
+      className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden will-change-transform" 
       id="about"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
+        {/* Particle-like floating elements */}
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-32 h-32 rounded-full bg-blue-500/5 blur-2xl"
+            animate={{
+              x: [
+                `${Math.sin(i * 45) * 50}%`,
+                `${Math.cos(i * 45) * 50}%`
+              ],
+              y: [
+                `${Math.cos(i * 45) * 50}%`,
+                `${Math.sin(i * 45) * 50}%`
+              ],
+              scale: [1, 1.2, 0.8, 1],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 10 + i * 2,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut",
+            }}
+            style={{
+              left: `${25 + Math.random() * 50}%`,
+              top: `${25 + Math.random() * 50}%`,
+            }}
+          />
+        ))}
+        
+        <motion.div
+          className="absolute w-full h-full"
+          animate={{
+            background: [
+              'radial-gradient(circle at 30% 30%, rgba(147, 51, 234, 0.05) 0%, transparent 70%)',
+              'radial-gradient(circle at 70% 70%, rgba(147, 51, 234, 0.05) 0%, transparent 70%)',
+            ]
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+          }}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-16 [text-shadow:none]"
         >
           <h2 className="text-5xl font-bold animate-gradient bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
             About Me
@@ -28,10 +75,11 @@ const AboutSection = ({ aboutRef, aboutY }: AboutSectionProps) => {
         </motion.div>
 
         <motion.div 
+          style={{ y: aboutY }}
           className="glass-effect tech-pattern matrix-overlay tech-border glow-effect cyber-pulse
                    rounded-xl p-8 relative overflow-hidden
                    transform transition-all duration-500 ease-out
-                   hover:scale-[1.02] group"
+                   hover:scale-[1.02] group [text-shadow:none]"
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5 }}

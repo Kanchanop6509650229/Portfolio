@@ -5,6 +5,9 @@ html {
 * {
   scrollbar-width: none;
   -ms-overflow-style: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 *::-webkit-scrollbar {
