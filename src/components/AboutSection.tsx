@@ -11,15 +11,43 @@ const AboutSection = ({ aboutRef, aboutY }: AboutSectionProps) => {
     <motion.section 
       ref={aboutRef}
       style={{ y: aboutY }}
-      transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
-      className="h-screen flex items-center py-20 px-4 bg-gray-800/50 animate__animated animate__fadeIn snap-start" 
+      className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start py-20 px-4" 
       id="about"
     >
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-4xl font-bold mb-8 text-center">About Me</h2>
-        <p className="text-lg text-gray-300 leading-relaxed">
-          Write your brief introduction here. Share your passion for technology and what drives you as a developer.
-        </p>
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-5xl font-bold animate-gradient bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+            About Me
+          </h2>
+          <p className="text-gray-400 mt-4 text-lg">Passionate about creating impactful solutions</p>
+        </motion.div>
+
+        <motion.div 
+          className="glass-effect tech-pattern matrix-overlay tech-border glow-effect cyber-pulse
+                   rounded-xl p-8 relative overflow-hidden
+                   transform transition-all duration-500 ease-out
+                   hover:scale-[1.02] group"
+          initial={{ y: 20, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-br from-green-500 to-blue-500 opacity-0 
+                       group-hover:opacity-10 transition-opacity duration-500"></div>
+          
+          <div className="relative z-10">
+            <p className="text-lg text-gray-300 leading-relaxed">
+              Write your brief introduction here. Share your passion for technology and what drives you as a developer.
+              Highlight your journey, experiences, and what makes you unique in the field of software development.
+            </p>
+          </div>
+
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
+        </motion.div>
       </div>
     </motion.section>
   );
