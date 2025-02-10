@@ -38,3 +38,50 @@
 .glow-effect:hover::after {
   opacity: 1;
 }
+
+/* Animated Gradient Border */
+.gradient-border-effect {
+  position: relative;
+  background: linear-gradient(135deg, rgba(103, 232, 249, 0.03), rgba(129, 140, 248, 0.03), rgba(192, 132, 252, 0.03));
+}
+
+.gradient-border-effect::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  background: linear-gradient(
+    to right,
+    rgba(103, 232, 249, 0.2),
+    rgba(129, 140, 248, 0.2),
+    rgba(192, 132, 252, 0.2)
+  );
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gradient-border-effect:hover::before {
+  opacity: 1;
+}
+
+/* Navbar Glass Effect */
+.navbar-glass {
+  background: linear-gradient(135deg, 
+    rgba(103, 232, 249, 0.05),
+    rgba(129, 140, 248, 0.05),
+    rgba(192, 132, 252, 0.05)
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-glass:hover {
+  background: linear-gradient(135deg, 
+    rgba(103, 232, 249, 0.08),
+    rgba(129, 140, 248, 0.08),
+    rgba(192, 132, 252, 0.08)
+  );
+  border-color: rgba(103, 232, 249, 0.2);
+}
