@@ -156,7 +156,8 @@ const ProjectCard = ({ project, onHover, onLeave, index }: {
 };
 
 const ProjectsSection = () => {
-  const infiniteProjectData = [...projectData, ...projectData];
+  // เพิ่มจำนวน project data ให้มากขึ้นเพื่อให้ scroll ได้ต่อเนื่อง
+  const infiniteProjectData = [...projectData, ...projectData, ...projectData, ...projectData];
   const controls = useAnimationControls();
 
   const startAnimation = () => {
@@ -215,23 +216,17 @@ const ProjectsSection = () => {
             animate={controls}
             initial={{ x: 0 }}
             onViewportEnter={startAnimation}
+            style={{ 
+              width: "fit-content",
+              willChange: "transform" // เพิ่ม performance optimization
+            }}
           >
             {infiniteProjectData.map((project, index) => (
               <ProjectCard 
                 key={`${project.title}-${index}`} 
                 project={project} 
                 onHover={() => controls.stop()}
-                onLeave={() => {
-                  controls.start({
-                    x: "-50%",
-                    transition: {
-                      duration: 40,
-                      repeat: Infinity,
-                      ease: "linear",
-                      repeatType: "loop"
-                    }
-                  });
-                }}
+                onLeave={startAnimation} // เปลี่ยนเป็นเรียก startAnimation โดยตรง
                 index={index}
               />
             ))}
