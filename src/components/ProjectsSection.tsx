@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useAnimationControls } from 'framer-motion';
 
 interface Project {
   title: string;
@@ -39,20 +39,55 @@ const projectData = [
   }
 ];
 
-const ProjectCard = ({ project }: { project: Project }) => {
+const ProjectCard = ({ project, onHover, onLeave, index }: { 
+  project: Project;
+  onHover: () => void;
+  onLeave: () => void;
+  index: number;
+}) => {
+  // Alternate card sizes with larger widths
+  const cardWidth = index % 3 === 0 ? 'min-w-[500px] w-[500px]' : 
+                   index % 3 === 1 ? 'min-w-[450px] w-[450px]' : 
+                   'min-w-[480px] w-[480px]';
+  
+  const cardHeight = index % 2 === 0 ? 'h-[320px]' : 'h-[300px]';
+  
+  // Different transform effects based on index
+  const hoverRotate = index % 2 === 0 ? 'hover:rotate-1' : 'hover:rotate-[-1deg]';
+  const hoverScale = index % 3 === 0 ? 'hover:scale-[1.03]' : 
+                    index % 3 === 1 ? 'hover:scale-[1.02]' : 
+                    'hover:scale-[1.04]';
+
   return (
-    <div className="min-w-[350px] w-[350px] mx-4">
-      <div className="h-[300px] glass-effect tech-pattern matrix-overlay tech-border glow-effect cyber-pulse
+    <motion.div 
+      className={`${cardWidth} mx-6 ${index % 2 === 0 ? 'mt-6' : '-mt-6'}`}
+      initial={{ y: 0 }}
+      animate={{ y: [0, index % 2 === 0 ? -8 : 8] }}
+      transition={{
+        duration: 2 + (index % 2),
+        repeat: Infinity,
+        repeatType: "reverse",
+        ease: "easeInOut"
+      }}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+    >
+      <div className={`${cardHeight} glass-effect tech-pattern matrix-overlay tech-border glow-effect cyber-pulse
                    rounded-xl p-6 relative overflow-hidden
                    transform transition-all duration-500 ease-out
-                   hover:scale-[1.02] hover:rotate-1 group">
+                   ${hoverRotate} ${hoverScale} group`}>
         <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 
                       group-hover:opacity-10 transition-opacity duration-500`}></div>
         
-        <div className="h-full flex flex-col justify-between relative z-10">
+        <motion.div 
+          className="h-full flex flex-col justify-between relative z-10"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+        >
           <div>
             <motion.h3 
-              className="text-2xl font-bold mb-3 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent"
+              className={`text-2xl font-bold mb-3 bg-gradient-to-r ${project.gradient} bg-clip-text text-transparent`}
               whileHover={{ scale: 1.01 }}
             >
               {project.title}
@@ -65,7 +100,10 @@ const ProjectCard = ({ project }: { project: Project }) => {
               {project.tech.map((tech: string) => (
                 <motion.span
                   key={tech}
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{ 
+                    scale: 1.1,
+                    rotate: Math.random() * 4 - 2 // Random slight rotation on hover
+                  }}
                   className={`px-3 py-1 rounded-full text-sm font-medium
                             bg-gradient-to-r ${project.gradient} bg-opacity-10
                             border border-gray-700 hover:border-gray-500
@@ -86,7 +124,10 @@ const ProjectCard = ({ project }: { project: Project }) => {
                        border border-gray-600 hover:border-gray-500
                        transition-all duration-300 ease-out
                        tech-border glow-effect"
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ 
+                scale: 1.02,
+                transition: { duration: 0.2 }
+              }}
               whileTap={{ scale: 0.98 }}
             >
               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
@@ -96,16 +137,39 @@ const ProjectCard = ({ project }: { project: Project }) => {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-purple-500/20 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300 rounded-lg" />
             </motion.a>
           </div>
-        </div>
+        </motion.div>
+
+        {/* Decorative corner shapes */}
+        <div className={`absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 rounded-tl-xl
+                      border-opacity-50 transition-all duration-300
+                      group-hover:border-opacity-100 group-hover:scale-110
+                      border-${project.gradient.split('-')[2]}-400`} />
+        <div className={`absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 rounded-br-xl
+                      border-opacity-50 transition-all duration-300
+                      group-hover:border-opacity-100 group-hover:scale-110
+                      border-${project.gradient.split('-')[3]}-400`} />
 
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 const ProjectsSection = () => {
-  const infiniteProjectData = [...projectData, ...projectData]; // Duplicate projects for seamless loop
+  const infiniteProjectData = [...projectData, ...projectData];
+  const controls = useAnimationControls();
+
+  const startAnimation = () => {
+    controls.start({
+      x: "-50%",
+      transition: {
+        duration: 40,
+        repeat: Infinity,
+        ease: "linear",
+        repeatType: "loop"
+      }
+    });
+  };
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden" id="projects">
@@ -145,22 +209,31 @@ const ProjectsSection = () => {
           <p className="text-gray-400 mt-4 text-lg">Building the future, one line at a time</p>
         </motion.div>
 
-        <div className="relative w-full overflow-hidden h-[400px] flex items-center">
+        <div className="relative w-full overflow-hidden h-[450px] flex items-center smooth-scroll">
           <motion.div 
-            className="flex absolute"
-            animate={{
-              x: [0, "-50%"]
-            }}
-            transition={{
-              x: {
-                duration: 20,
-                repeat: Infinity,
-                ease: "linear"
-              }
-            }}
+            className="flex absolute optimize-animation"
+            animate={controls}
+            initial={{ x: 0 }}
+            onViewportEnter={startAnimation}
           >
             {infiniteProjectData.map((project, index) => (
-              <ProjectCard key={`${project.title}-${index}`} project={project} />
+              <ProjectCard 
+                key={`${project.title}-${index}`} 
+                project={project} 
+                onHover={() => controls.stop()}
+                onLeave={() => {
+                  controls.start({
+                    x: "-50%",
+                    transition: {
+                      duration: 40,
+                      repeat: Infinity,
+                      ease: "linear",
+                      repeatType: "loop"
+                    }
+                  });
+                }}
+                index={index}
+              />
             ))}
           </motion.div>
         </div>

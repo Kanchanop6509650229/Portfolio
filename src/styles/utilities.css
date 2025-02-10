@@ -114,3 +114,19 @@
 .group\/btn:hover::before {
   opacity: 1;
 }
+
+/* Performance Optimizations */
+.optimize-animation {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
