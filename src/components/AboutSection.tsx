@@ -1,22 +1,26 @@
-import { motion, MotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { RefObject } from 'react';
 
-interface AboutSectionProps {
-  aboutRef: RefObject<HTMLDivElement | null>;
-  aboutY: MotionValue<string>;
-}
+const AboutSection = () => {
+  const { scrollYProgress } = useScroll({
+    offset: ["start end", "end start"]
+  });
 
-const AboutSection = ({ aboutRef, aboutY }: AboutSectionProps) => {
+  const backgroundScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
+  const backgroundOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.5, 0.3]);
+  const contentScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.9, 1, 0.9]);
+
   const orbitItems = [0, 1, 2, 3];
 
   return (
-    <motion.section 
-      ref={aboutRef}
-      className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden will-change-transform" 
+    <section 
+      className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden" 
       id="about"
     >
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
-        {/* Particle-like floating elements */}
+      <motion.div 
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        style={{ opacity: backgroundOpacity, scale: backgroundScale }}
+      >
         {orbitItems.map((i) => (
           <motion.div
             key={i}
@@ -61,7 +65,7 @@ const AboutSection = ({ aboutRef, aboutY }: AboutSectionProps) => {
             ease: "easeInOut",
           }}
         />
-      </div>
+      </motion.div>
 
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div
@@ -77,7 +81,7 @@ const AboutSection = ({ aboutRef, aboutY }: AboutSectionProps) => {
         </motion.div>
 
         <motion.div 
-          style={{ y: aboutY }}
+          style={{ scale: contentScale }}
           className="glass-effect tech-pattern matrix-overlay tech-border glow-effect cyber-pulse
                    rounded-xl p-8 relative overflow-hidden
                    transform transition-all duration-500 ease-out
@@ -99,7 +103,7 @@ const AboutSection = ({ aboutRef, aboutY }: AboutSectionProps) => {
           <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
         </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 
