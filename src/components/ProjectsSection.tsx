@@ -5,8 +5,6 @@ interface Project {
   description: string;
   tech: string[];
   gradient: string;
-  size: string;
-  height: string;
   github: string;
 }
 
@@ -16,8 +14,6 @@ const projectData = [
     description: 'Interactive 3D visualization of neural networks with real-time training data.',
     tech: ['Three.js', 'TensorFlow.js', 'WebGL', 'React'],
     gradient: 'from-blue-600 to-cyan-500',
-    size: 'col-span-12 md:col-span-8',
-    height: 'h-[300px]',
     github: 'https://github.com/yourusername/neural-network-viz'
   },
   {
@@ -25,8 +21,6 @@ const projectData = [
     description: 'Web-based quantum circuit simulator with visual programming interface.',
     tech: ['TypeScript', 'WebAssembly', 'Rust'],
     gradient: 'from-purple-600 to-pink-500',
-    size: 'col-span-12 md:col-span-4',
-    height: 'h-[300px]',
     github: 'https://github.com/yourusername/quantum-sim'
   },
   {
@@ -34,8 +28,6 @@ const projectData = [
     description: 'Distributed computing platform for IoT devices with real-time analytics.',
     tech: ['Kubernetes', 'Rust', 'gRPC', 'InfluxDB'],
     gradient: 'from-green-500 to-emerald-400',
-    size: 'col-span-12 md:col-span-6',
-    height: 'h-[250px]',
     github: 'https://github.com/yourusername/edge-platform'
   },
   {
@@ -43,26 +35,17 @@ const projectData = [
     description: 'Real-time blockchain data analysis and visualization platform.',
     tech: ['Web3.js', 'D3.js', 'Node.js', 'MongoDB'],
     gradient: 'from-orange-500 to-yellow-400',
-    size: 'col-span-12 md:col-span-6',
-    height: 'h-[250px]',
     github: 'https://github.com/yourusername/blockchain-analytics'
   }
 ];
 
-const ProjectCard = ({ project, index }: { project: Project, index: number }) => {
+const ProjectCard = ({ project }: { project: Project }) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.2 }}
-      className={`group ${project.size} perspective-1000`}
-    >
-      <div 
-        className={`${project.height} glass-effect tech-pattern matrix-overlay tech-border glow-effect cyber-pulse
+    <div className="min-w-[350px] w-[350px] mx-4">
+      <div className="h-[300px] glass-effect tech-pattern matrix-overlay tech-border glow-effect cyber-pulse
                    rounded-xl p-6 relative overflow-hidden
                    transform transition-all duration-500 ease-out
-                   hover:scale-[1.02] hover:rotate-1`}
-      >
+                   hover:scale-[1.02] hover:rotate-1 group">
         <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-0 
                       group-hover:opacity-10 transition-opacity duration-500`}></div>
         
@@ -82,10 +65,7 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
               {project.tech.map((tech: string) => (
                 <motion.span
                   key={tech}
-                  whileHover={{ 
-                    scale: 1.1,
-                    transition: { duration: 0.2 }
-                  }}
+                  whileHover={{ scale: 1.1 }}
                   className={`px-3 py-1 rounded-full text-sm font-medium
                             bg-gradient-to-r ${project.gradient} bg-opacity-10
                             border border-gray-700 hover:border-gray-500
@@ -120,59 +100,16 @@ const ProjectCard = ({ project, index }: { project: Project, index: number }) =>
 
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
       </div>
-    </motion.div>
+    </div>
   );
 };
 
 const ProjectsSection = () => {
+  const infiniteProjectData = [...projectData, ...projectData]; // Duplicate projects for seamless loop
+
   return (
     <section className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden" id="projects">
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
-        {/* Constellation Points */}
-        {[...Array(12)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-indigo-400/30"
-            initial={{ opacity: 0.2 }}
-            animate={{
-              opacity: [0.2, 0.8, 0.2],
-              scale: [1, 1.5, 1],
-              boxShadow: [
-                '0 0 10px rgba(129, 140, 248, 0.3)',
-                '0 0 20px rgba(129, 140, 248, 0.5)',
-                '0 0 10px rgba(129, 140, 248, 0.3)',
-              ],
-            }}
-            transition={{
-              duration: 3 + (i % 3) * 2, // Using modulo for variation instead of random
-              repeat: Infinity,
-              delay: i * 0.3,
-            }}
-            style={{
-              left: `${20 + (i * 5)}%`,  // Using index-based calculation
-              top: `${20 + ((i * 7) % 60)}%`,  // Using modulo to keep within bounds
-            }}
-          />
-        ))}
-
-        {/* Connecting Lines */}
-        <svg className="absolute inset-0 w-full h-full">
-          <motion.path
-            stroke="rgba(129, 140, 248, 0.1)"
-            strokeWidth="1"
-            fill="none"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-            d="M 100,100 L 300,150 L 200,300 L 400,250 Z"
-          />
-        </svg>
-
-        {/* Glowing Background Areas */}
         <motion.div
           className="absolute w-[60rem] h-[60rem] rounded-full"
           animate={{
@@ -195,7 +132,7 @@ const ProjectsSection = () => {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10 w-full py-10">
+      <div className="w-full relative z-10">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -208,16 +145,25 @@ const ProjectsSection = () => {
           <p className="text-gray-400 mt-4 text-lg">Building the future, one line at a time</p>
         </motion.div>
 
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-12 gap-6"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, staggerChildren: 0.1 }}
-        >
-          {projectData.map((project, index) => (
-            <ProjectCard key={project.title} project={project} index={index} />
-          ))}
-        </motion.div>
+        <div className="relative w-full overflow-hidden h-[400px] flex items-center">
+          <motion.div 
+            className="flex absolute"
+            animate={{
+              x: [0, "-50%"]
+            }}
+            transition={{
+              x: {
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear"
+              }
+            }}
+          >
+            {infiniteProjectData.map((project, index) => (
+              <ProjectCard key={`${project.title}-${index}`} project={project} />
+            ))}
+          </motion.div>
+        </div>
       </div>
     </section>
   );
