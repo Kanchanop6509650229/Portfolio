@@ -1,10 +1,5 @@
-import { motion, MotionValue } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { RefObject } from 'react';
-
-interface SkillsSectionProps {
-  skillsRef: RefObject<HTMLDivElement | null>;
-  skillsY: MotionValue<string>;
-}
 
 const skillsData = [
   { name: 'JavaScript', gradient: 'from-yellow-400 to-orange-500' },
@@ -15,14 +10,23 @@ const skillsData = [
   { name: 'SQL', gradient: 'from-orange-400 to-pink-500' }
 ];
 
-const SkillsSection = ({ skillsRef, skillsY }: SkillsSectionProps) => {
+const SkillsSection = () => {
+  const { scrollYProgress } = useScroll({
+    offset: ["start end", "end start"]
+  });
+
+  const backgroundScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
+  const backgroundOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.5, 0.3]);
+
   return (
-    <motion.section 
-      ref={skillsRef}
-      className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden will-change-transform" 
+    <section 
+      className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden" 
       id="skills"
     >
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
+      <motion.div 
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        style={{ opacity: backgroundOpacity, scale: backgroundScale }}
+      >
         {/* Hexagonal Grid Pattern */}
         {[...Array(6)].map((_, i) => (
           <motion.div
@@ -68,7 +72,7 @@ const SkillsSection = ({ skillsRef, skillsY }: SkillsSectionProps) => {
             }}
           />
         </svg>
-      </div>
+      </motion.div>
 
       <div className="max-w-7xl mx-auto relative z-10 w-full">
         <motion.div
@@ -84,7 +88,6 @@ const SkillsSection = ({ skillsRef, skillsY }: SkillsSectionProps) => {
         </motion.div>
 
         <motion.div 
-          style={{ y: skillsY }}
           className="grid grid-cols-1 md:grid-cols-3 gap-6"
         >
           {skillsData.map((skill, index) => (
@@ -93,6 +96,7 @@ const SkillsSection = ({ skillsRef, skillsY }: SkillsSectionProps) => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: false, amount: 0.2 }}
               className="group perspective-1000"
             >
               <motion.div 
@@ -123,7 +127,7 @@ const SkillsSection = ({ skillsRef, skillsY }: SkillsSectionProps) => {
           ))}
         </motion.div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 

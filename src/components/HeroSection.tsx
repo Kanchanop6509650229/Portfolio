@@ -1,17 +1,14 @@
-import { motion, MotionValue } from 'framer-motion';
-import { RefObject } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
-interface HeroSectionProps {
-  heroRef: RefObject<HTMLDivElement | null>;
-  heroY: MotionValue<string>;
-}
+const HeroSection = () => {
+  const { scrollYProgress } = useScroll();
+  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
-const HeroSection = ({ heroRef, heroY }: HeroSectionProps) => {
   return (
-    <motion.section 
+    <section 
       id="top"
-      ref={heroRef}
-      className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden will-change-transform" 
+      className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden" 
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
         <motion.div
@@ -52,12 +49,8 @@ const HeroSection = ({ heroRef, heroY }: HeroSectionProps) => {
         />
       </div>
 
-      {/* Main content */}
       <motion.div
-        style={{ y: heroY }}
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        style={{ scale, opacity }}
         className="text-center space-y-8 relative z-10 [text-shadow:none]"
       >
         <motion.h1 
@@ -88,7 +81,7 @@ const HeroSection = ({ heroRef, heroY }: HeroSectionProps) => {
           </div>
         </motion.div>
       </motion.div>
-    </motion.section>
+    </section>
   );
 };
 
