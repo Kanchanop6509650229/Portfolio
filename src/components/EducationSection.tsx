@@ -1,25 +1,28 @@
 import { motion } from 'framer-motion';
 
-const educationData = [
+const roadmapData = [
   {
-    degree: 'Your Degree',
-    university: 'Your University',
+    title: 'Your Degree',
+    institution: 'Your University',
     period: '2019 - 2023',
     description: 'Brief description of your major studies and achievements',
-    gradient: 'from-purple-600 to-blue-500'
+    gradient: 'from-purple-600 to-blue-500',
+    icon: '🎓'
   },
   {
-    degree: 'Certification',
-    university: 'Online Platform',
+    title: 'Certification',
+    institution: 'Online Platform',
     period: '2023',
     description: 'Relevant certifications or additional education',
-    gradient: 'from-cyan-400 to-emerald-500'
+    gradient: 'from-cyan-400 to-emerald-500',
+    icon: '📜'
   }
 ];
 
 const EducationSection = () => {
   return (
     <section className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden" id="education">
+      {/* Background effects */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
         {/* Flowing curves */}
         <svg className="absolute inset-0 w-full h-full">
@@ -152,7 +155,7 @@ const EducationSection = () => {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10 w-full">
+      <div className="max-w-7xl mx-auto relative z-10 w-full px-4">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -160,43 +163,68 @@ const EducationSection = () => {
           className="text-center mb-16"
         >
           <h2 className="text-5xl font-bold animate-gradient bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
-            Education
+            Learning Roadmap
           </h2>
-          <p className="text-gray-400 mt-4 text-lg">Building a strong foundation for innovation</p>
+          <p className="text-gray-400 mt-4 text-lg">My journey through education and growth</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {educationData.map((edu, index) => (
-            <motion.div
-              key={edu.degree}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group perspective-1000"
-            >
-              <div className={`glass-effect tech-pattern matrix-overlay tech-border glow-effect cyber-pulse
-                           rounded-xl p-8 relative overflow-hidden
-                           transform transition-all duration-500 ease-out
-                           hover:scale-[1.02] hover:rotate-1`}
-              >
-                <div className={`absolute inset-0 bg-gradient-to-br ${edu.gradient} opacity-0 
-                             group-hover:opacity-10 transition-opacity duration-500`}></div>
-                
-                <div className="relative z-10 space-y-4">
-                  <motion.h3 
-                    className={`text-2xl font-bold bg-gradient-to-r ${edu.gradient} bg-clip-text text-transparent`}
-                    whileHover={{ scale: 1.01 }}
-                  >
-                    {edu.degree}
-                  </motion.h3>
-                  <div className="space-y-2">
-                    <p className="text-xl text-gray-300">{edu.university}</p>
-                    <p className="text-gray-400">{edu.period}</p>
-                    <p className="text-gray-300 text-sm">{edu.description}</p>
-                  </div>
-                </div>
+        <div className="relative">
+          {/* Timeline line */}
+          <motion.div
+            initial={{ height: 0 }}
+            whileInView={{ height: '100%' }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-blue-500 to-purple-600 h-full"
+          />
 
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
+          {roadmapData.map((item, index) => (
+            <motion.div
+              key={item.title}
+              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: index * 0.2 }}
+              className={`flex items-center mb-12 ${
+                index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
+              } relative`}
+            >
+              {/* Timeline node with fixed positioning */}
+              <div className="absolute left-1/2 -translate-x-1/2 inline-flex items-center justify-center">
+                <div className="relative w-12 h-12 transform-gpu">
+                  <motion.div
+                    whileHover="hover"
+                    animate="rest"
+                    variants={{
+                      hover: { scale: 1.2 },
+                      rest: { scale: 1 }
+                    }}
+                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                    className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-2xl transform-gpu"
+                    style={{ transformOrigin: 'center center' }}
+                  >
+                    {item.icon}
+                  </motion.div>
+                </div>
+              </div>
+
+              {/* Content card */}
+              <div className={`w-5/12 ${index % 2 === 0 ? 'pr-16' : 'pl-16'}`}>
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  className="glass-effect tech-pattern matrix-overlay tech-border glow-effect cyber-pulse
+                             rounded-xl p-6 relative overflow-hidden"
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-5`}></div>
+                  <div className="relative z-10 space-y-3">
+                    <motion.h3 
+                      className={`text-2xl font-bold bg-gradient-to-r ${item.gradient} bg-clip-text text-transparent`}
+                    >
+                      {item.title}
+                    </motion.h3>
+                    <p className="text-xl text-gray-300">{item.institution}</p>
+                    <p className="text-gray-400">{item.period}</p>
+                    <p className="text-gray-300 text-sm">{item.description}</p>
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
           ))}
