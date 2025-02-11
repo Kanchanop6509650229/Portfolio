@@ -1,0 +1,132 @@
+/* Tech Pattern Overlay */
+.tech-pattern {
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: center center;
+}
+
+/* 3D Perspective */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Hover Effects */
+.hover-lift {
+  transition: transform 0.2s ease-in-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+/* Tech Border */
+.tech-border {
+  position: relative;
+  background-clip: padding-box;
+  border: 1px solid transparent;
+}
+
+.tech-border::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    rgba(33, 150, 243, 0.3),
+    rgba(156, 39, 176, 0.3),
+    rgba(33, 150, 243, 0.3)
+  );
+  background-size: 200% 100%;
+  animation: border-flow 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tech-border:hover::before {
+  opacity: 1;
+}
+
+/* Matrix Rain Effect */
+.matrix-overlay {
+  position: relative;
+  overflow: hidden;
+}
+
+.matrix-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(0deg, 
+    rgba(0, 255, 0, 0.03) 25%, 
+    transparent 25%
+  );
+  background-size: 100% 4px;
+  animation: matrix-rain 20s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.matrix-overlay:hover::before {
+  opacity: 1;
+}
+
+/* Cyber Pulse */
+.cyber-pulse {
+  transition: all 0.3s ease;
+}
+
+.cyber-pulse:hover {
+  animation: cyber-pulse 1.5s infinite;
+}
+
+/* GitHub Button Effects */
+.group\/btn:hover svg {
+  filter: drop-shadow(0 0 8px rgba(88, 166, 255, 0.5));
+  transform: rotate(-3deg) scale(1.1);
+  transition: all 0.3s ease;
+}
+
+.group\/btn:hover span {
+  text-shadow: 0 0 8px rgba(88, 166, 255, 0.5);
+}
+
+.group\/btn::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  z-index: -1;
+  background: linear-gradient(
+    90deg,
+    #3b82f6,
+    #8b5cf6,
+    #3b82f6
+  );
+  background-size: 200% 100%;
+  animation: shine 6s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  border-radius: 8px;
+}
+
+.group\/btn:hover::before {
+  opacity: 1;
+}
+
+/* Performance Optimizations */
+.optimize-animation {
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
+}
+
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
