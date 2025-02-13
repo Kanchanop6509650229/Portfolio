@@ -55,12 +55,11 @@ model Skill {
 
 model Career {
   id          Int      @id @default(autoincrement())
-  company     String
-  position    String
+  degree     String
+  university    String
   startDate   DateTime
   endDate     DateTime?
   description String   @db.Text
-  current     Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

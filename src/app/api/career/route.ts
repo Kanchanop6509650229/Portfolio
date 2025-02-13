@@ -20,12 +20,11 @@ export async function POST(request: Request) {
     const data = await request.json();
     const career = await prisma.career.create({
       data: {
-        company: data.company,
-        position: data.position,
+        degree: data.degree,
+        university: data.university,
         startDate: new Date(data.startDate),
         endDate: data.endDate ? new Date(data.endDate) : null,
         description: data.description,
-        current: data.current
       }
     });
     return NextResponse.json(career);
@@ -41,12 +40,11 @@ export async function PUT(request: Request) {
     const career = await prisma.career.update({
       where: { id: data.id },
       data: {
-        company: data.company,
-        position: data.position,
+        degree: data.degree,
+        university: data.university,
         startDate: new Date(data.startDate),
         endDate: data.endDate ? new Date(data.endDate) : null,
         description: data.description,
-        current: data.current
       }
     });
     return NextResponse.json(career);

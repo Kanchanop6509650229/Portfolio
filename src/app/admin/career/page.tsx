@@ -56,15 +56,14 @@ export default function CareerPage() {
             <div className="flex justify-between items-start">
               <div className="space-y-2">
                 <h3 className="font-semibold text-lg group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-500 group-hover:bg-clip-text transition-all duration-300">
-                  {career.position}
+                  {career.university}
                 </h3>
-                <p className="text-cyan-400">{career.company}</p>
+                <p className="text-cyan-400">{career.degree}</p>
                 <p className="text-sm text-gray-400">
                   {new Date(career.startDate).toLocaleDateString('en-US', { 
                     month: 'long',
                     year: 'numeric'
                   })} - {
-                    career.current ? 'Present' : 
                     career.endDate ? new Date(career.endDate).toLocaleDateString('en-US', { 
                       month: 'long',
                       year: 'numeric'

@@ -5,8 +5,8 @@ import { Card } from '@/components/ui/Card';
 
 export default function CareerForm({ experience = null, onSuccess = () => {} }) {
   const [formData, setFormData] = useState({
-    company: experience?.company || '',
-    position: experience?.position || '',
+    degree: experience?.degree || '',
+    university: experience?.university || '',
     startDate: experience?.startDate ? new Date(experience.startDate).toISOString().split('T')[0] : '',
     endDate: experience?.endDate ? new Date(experience.endDate).toISOString().split('T')[0] : '',
     description: experience?.description || '',
@@ -27,8 +27,8 @@ export default function CareerForm({ experience = null, onSuccess = () => {} }) 
       onSuccess();
       if (!experience) {
         setFormData({
-          company: '',
-          position: '',
+          degree: '',
+          university: '',
           startDate: '',
           endDate: '',
           description: '',
@@ -47,26 +47,26 @@ export default function CareerForm({ experience = null, onSuccess = () => {} }) 
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-cyan-400">
-              Company
+              Degree
               <input
                 type="text"
                 required
                 className="mt-1 block w-full rounded-lg border-0 bg-gray-800/50 text-white shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-cyan-500 tech-border"
-                value={formData.company}
-                onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                value={formData.degree}
+                onChange={(e) => setFormData({ ...formData, degree: e.target.value })}
               />
             </label>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-cyan-400">
-              Position
+              University
               <input
                 type="text"
                 required
                 className="mt-1 block w-full rounded-lg border-0 bg-gray-800/50 text-white shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-cyan-500 tech-border"
-                value={formData.position}
-                onChange={(e) => setFormData({ ...formData, position: e.target.value })}
+                value={formData.university}
+                onChange={(e) => setFormData({ ...formData, university: e.target.value })}
               />
             </label>
           </div>
@@ -97,18 +97,6 @@ export default function CareerForm({ experience = null, onSuccess = () => {} }) 
                 />
               </label>
             </div>
-          </div>
-
-          <div>
-            <label className="flex items-center text-sm font-medium text-cyan-400 cursor-pointer">
-              <input
-                type="checkbox"
-                className="rounded border-gray-700 bg-gray-800/50 text-cyan-500 shadow-sm focus:ring-cyan-500 focus:ring-offset-gray-900"
-                checked={formData.current}
-                onChange={(e) => setFormData({ ...formData, current: e.target.checked })}
-              />
-              <span className="ml-2">Current Position</span>
-            </label>
           </div>
 
           <div>

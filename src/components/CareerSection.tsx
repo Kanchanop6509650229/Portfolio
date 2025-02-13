@@ -4,12 +4,11 @@ import { getCareers } from '@/lib/api';
 
 interface Career {
   id: number;
-  company: string;
-  position: string;
+  degree: string;
+  university: string;
   startDate: string;
   endDate: string | null;
   description: string;
-  current: boolean;
 }
 
 const CareerSection = () => {
@@ -60,16 +59,15 @@ const CareerSection = () => {
               <div className={`w-1/2 ${index % 2 === 0 ? 'pr-12 text-right' : 'pl-12'}`}>
                 <div className="glass-effect tech-border p-6 rounded-lg">
                   <div className="flex flex-col gap-2">
-                    <h3 className="text-xl font-bold text-white">{career.position}</h3>
+                    <h3 className="text-xl font-bold text-white">{career.university}</h3>
                     <h4 className="text-lg font-semibold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
-                      {career.company}
+                      {career.degree}
                     </h4>
                     <p className="text-gray-400 text-sm">
                       {new Date(career.startDate).toLocaleDateString('en-US', { 
                         month: 'long', 
                         year: 'numeric' 
                       })} - {
-                        career.current ? 'Present' : 
                         career.endDate ? new Date(career.endDate).toLocaleDateString('en-US', { 
                           month: 'long', 
                           year: 'numeric' 

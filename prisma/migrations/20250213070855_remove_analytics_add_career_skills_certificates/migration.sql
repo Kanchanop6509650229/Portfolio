@@ -13,8 +13,8 @@ CREATE TABLE `Skill` (
 -- CreateTable
 CREATE TABLE `Career` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `company` VARCHAR(191) NOT NULL,
-    `position` VARCHAR(191) NOT NULL,
+    `degree` VARCHAR(191) NOT NULL,
+    `university` VARCHAR(191) NOT NULL,
     `startDate` DATETIME(3) NOT NULL,
     `endDate` DATETIME(3) NULL,
     `description` TEXT NOT NULL,
