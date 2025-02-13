@@ -73,7 +73,7 @@ const LearningRoadmapSection = () => {
           <h2 className="text-5xl font-bold animate-gradient bg-gradient-to-r from-emerald-400 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
             Learning Roadmap
           </h2>
-          <p className="text-gray-400 mt-4 text-lg">My educational journey and professional development</p>
+          <p className="text-gray-400 mt-4 text-lg">My journey through education and growth</p>
         </motion.div>
 
         <div className="relative">
