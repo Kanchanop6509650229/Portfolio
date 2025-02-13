@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from 'react';
-import { Card } from '@/components/ui/Card';
 
 interface Skill {
   id: number;
@@ -21,9 +20,14 @@ export default function SkillForm({ skill = null, onSuccess = () => {} }: SkillF
     category: skill?.category || '',
     proficiency: skill?.proficiency || 3
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
+
     try {
       const response = await fetch('/api/skills', {
         method: skill ? 'PUT' : 'POST',
@@ -37,66 +41,73 @@ export default function SkillForm({ skill = null, onSuccess = () => {} }: SkillF
       if (!skill) {
         setFormData({ name: '', category: '', proficiency: 3 });
       }
-    } catch (error) {
-      console.error('Error saving skill:', error);
-      alert('Failed to save skill');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <Card className="p-6">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Skill Name
-            <input
-              type="text"
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            />
-          </label>
-        </div>
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div>
+        <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Skill Name
+        </label>
+        <input
+          type="text"
+          id="name"
+          required
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+        />
+      </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Category
-            <input
-              type="text"
-              required
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
-              value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            />
-          </label>
-        </div>
+      <div>
+        <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Category
+        </label>
+        <input
+          type="text"
+          id="category"
+          required
+          className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
+          value={formData.category}
+          onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+        />
+      </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Proficiency (1-5)
-            <input
-              type="range"
-              min="1"
-              max="5"
-              className="mt-1 block w-full"
-              value={formData.proficiency}
-              onChange={(e) => setFormData({ ...formData, proficiency: parseInt(e.target.value) })}
-            />
-            <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
-              <span>Beginner</span>
-              <span>Expert</span>
-            </div>
-          </label>
+      <div>
+        <label htmlFor="proficiency" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          Proficiency (1-5)
+        </label>
+        <input
+          type="range"
+          id="proficiency"
+          min="1"
+          max="5"
+          className="w-full"
+          value={formData.proficiency}
+          onChange={(e) => setFormData({ ...formData, proficiency: parseInt(e.target.value) })}
+        />
+        <div className="flex justify-between text-xs text-gray-600 dark:text-gray-400">
+          <span>Beginner</span>
+          <span>Expert</span>
         </div>
+      </div>
 
-        <button
-          type="submit"
-          className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded-md dark:bg-blue-500 dark:hover:bg-blue-600"
-        >
-          {skill ? 'Update Skill' : 'Add Skill'}
-        </button>
-      </form>
-    </Card>
+      {error && (
+        <div className="text-red-600 text-sm">{error}</div>
+      )}
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 dark:from-blue-500 dark:to-cyan-500 dark:hover:from-blue-600 dark:hover:to-cyan-600 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {loading ? 'Saving...' : (skill ? 'Update Skill' : 'Add Skill')}
+      </button>
+    </form>
   );
 }
