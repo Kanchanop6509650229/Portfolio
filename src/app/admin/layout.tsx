@@ -1,35 +1,25 @@
 import { getServerSession } from 'next-auth';
 
-export default async function AdminLayout({
+export default function AdminLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
-  const session = await getServerSession();
-
   return (
-    <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <h1 className="text-xl font-bold">Admin Dashboard</h1>
-              </div>
-            </div>
-            {session?.user && (
-              <div className="flex items-center">
-                <span className="text-gray-700">{session.user.email}</span>
-              </div>
-            )}
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="container mx-auto px-4 py-8">
+        <header className="mb-8">
+          <div className="flex items-center justify-between">
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400">
+              Admin Dashboard
+            </h1>
           </div>
-        </div>
-      </nav>
-      <main className="py-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        </header>
+        <main className="relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-400/30 to-cyan-400/30 dark:from-blue-900/30 dark:to-cyan-900/30 blur-3xl -z-10" />
           {children}
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
-  );
+  )
 }

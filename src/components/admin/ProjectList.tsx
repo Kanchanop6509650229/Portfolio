@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Project } from '@prisma/client';
+import { FiEdit2, FiTrash2, FiEye } from 'react-icons/fi';
 
 interface ProjectListProps {
   projects: Project[];
@@ -49,52 +50,60 @@ export default function ProjectList({ projects }: ProjectListProps) {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {projects.map((project) => (
-            <tr key={project.id}>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm font-medium text-gray-900">{project.title}</div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                  project.featured ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                }`}>
-                  {project.featured ? 'Featured' : 'Standard'}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {new Date(project.createdAt).toLocaleDateString()}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-2">
-                <button
-                  onClick={() => toggleFeatured(project.id, project.featured)}
-                  disabled={loading === project.id}
-                  className="text-blue-600 hover:text-blue-900"
-                >
-                  {loading === project.id ? 'Updating...' : (project.featured ? 'Unfeature' : 'Feature')}
-                </button>
-                <button
-                  onClick={() => handleDelete(project.id)}
-                  disabled={loading === project.id}
-                  className="text-red-600 hover:text-red-900"
-                >
-                  {loading === project.id ? 'Deleting...' : 'Delete'}
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="divide-y divide-gray-200 dark:divide-gray-700">
+      {projects.map((project) => (
+        <div 
+          key={project.id}
+          className="py-4 first:pt-0 last:pb-0 transition-colors hover:bg-gray-50/50 dark:hover:bg-gray-800/50"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+                {project.title}
+              </h3>
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                {project.description}
+              </p>
+              <div className="mt-2 flex items-center gap-2">
+                {project.tags?.split(',').map((tag) => (
+                  <span 
+                    key={tag}
+                    className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
+                  >
+                    {tag.trim()}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="ml-4 flex items-center gap-2">
+              <button 
+                className="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                title="View"
+              >
+                <FiEye className="w-5 h-5" />
+              </button>
+              <button 
+                className="p-2 text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                title="Edit"
+              >
+                <FiEdit2 className="w-5 h-5" />
+              </button>
+              <button 
+                className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                title="Delete"
+              >
+                <FiTrash2 className="w-5 h-5" />
+              </button>
+            </div>
+          </div>
+        </div>
+      ))}
+      
+      {projects.length === 0 && (
+        <div className="py-6 text-center text-gray-500 dark:text-gray-400">
+          No projects found. Create your first project!
+        </div>
+      )}
     </div>
   );
 }
