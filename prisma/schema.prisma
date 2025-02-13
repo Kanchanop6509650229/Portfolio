@@ -27,9 +27,7 @@ model Project {
   id          Int      @id @default(autoincrement())
   title       String
   description String   @db.Text
-  imageUrl    String?
   githubUrl   String?
-  liveUrl     String?
   technologies String   @db.Text
   featured    Boolean  @default(false)
   createdAt   DateTime @default(now())

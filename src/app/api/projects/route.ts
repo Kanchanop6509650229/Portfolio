@@ -28,9 +28,7 @@ export async function POST(req: NextRequest) {
       data: {
         title: data.title,
         description: data.description,
-        imageUrl: data.imageUrl,
         githubUrl: data.githubUrl,
-        liveUrl: data.liveUrl,
         technologies: data.technologies,
         featured: data.featured || false,
       }
