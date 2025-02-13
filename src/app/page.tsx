@@ -7,8 +7,7 @@ import SkillsSection from '../components/SkillsSection';
 import ProjectsSection from '../components/ProjectsSection';
 import EducationSection from '../components/EducationSection';
 import ContactSection from '../components/ContactSection';
-import CareerSection from '../components/CareerSection';
-import CertificatesSection from '../components/CertificatesSection';
+import LearningRoadmapSection from '../components/LearningRoadmapSection';
 
 export default function Home() {
   return (
@@ -18,9 +17,8 @@ export default function Home() {
         <HeroSection />
         <AboutSection />
         <SkillsSection />
-        <CareerSection />
+        <LearningRoadmapSection />
         <ProjectsSection />
-        <CertificatesSection />
         <EducationSection />
         <ContactSection />
       </div>
