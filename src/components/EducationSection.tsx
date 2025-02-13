@@ -1,231 +1,174 @@
 import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { getCareers, getCertificates } from '@/lib/api';
 
-const roadmapData = [
-  {
-    title: 'Your Degree',
-    institution: 'Your University',
-    period: '2019 - 2023',
-    description: 'Brief description of your major studies and achievements',
-    gradient: 'from-purple-600 to-blue-500',
-    icon: '🎓'
-  },
-  {
-    title: 'Certification',
-    institution: 'Online Platform',
-    period: '2023',
-    description: 'Relevant certifications or additional education',
-    gradient: 'from-cyan-400 to-emerald-500',
-    icon: '📜'
-  }
-];
+interface Career {
+  id: number;
+  company: string;
+  position: string;
+  startDate: string;
+  endDate: string | null;
+  description: string;
+  current: boolean;
+}
 
-const EducationSection = () => {
+interface Certificate {
+  id: number;
+  name: string;
+  issuer: string;
+  issueDate: string;
+  expiryDate: string | null;
+  credentialUrl: string | null;
+}
+
+const LearningRoadmapSection = () => {
+  const [careers, setCareers] = useState<Career[]>([]);
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [careerData, certData] = await Promise.all([
+          getCareers(),
+          getCertificates()
+        ]);
+        
+        setCareers(careerData.sort((a: Career, b: Career) => 
+          new Date(b.startDate).getTime() - new Date(a.startDate).getTime()
+        ));
+        
+        setCertificates(certData.sort((a: Certificate, b: Certificate) => 
+          new Date(b.issueDate).getTime() - new Date(a.issueDate).getTime()
+        ));
+      } catch (error) {
+        console.error('Failed to fetch data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const timelineItems = [
+    ...careers.map(career => ({
+      type: 'career' as const,
+      date: new Date(career.startDate),
+      data: career,
+    })),
+    ...certificates.map(cert => ({
+      type: 'certificate' as const,
+      date: new Date(cert.issueDate),
+      data: cert,
+    }))
+  ].sort((a, b) => b.date.getTime() - a.date.getTime());
+
   return (
-    <section className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden" id="education">
-      {/* Background effects */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
-        {/* Flowing curves */}
-        <svg className="absolute inset-0 w-full h-full">
-          {[...Array(3)].map((_, i) => (
-            <motion.path
-              key={i}
-              d={`M ${-100 + i * 200},${100 + i * 100} C ${200 + i * 100},${150 + i * 50} ${400 - i * 100},${200 - i * 50} ${600 + i * 200},${300 + i * 100}`}
-              stroke={`rgba(${i === 0 ? '251, 191, 36' : i === 1 ? '249, 115, 22' : '234, 179, 8'}, 0.15)`}
-              strokeWidth="3"
-              fill="none"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ 
-                pathLength: [0, 1, 0],
-                opacity: [0.1, 0.3, 0.1],
-              }}
-              transition={{
-                duration: 8 + i * 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: i * 2,
-              }}
-            />
-          ))}
-        </svg>
-
-        {/* Light orbs */}
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-32 h-32 rounded-full"
-            initial={{ opacity: 0 }}
-            animate={{
-              opacity: [0.1, 0.3, 0.1],
-              scale: [1, 1.2, 1],
-            }}
-            transition={{
-              duration: 4,
-              repeat: Infinity,
-              delay: i * 0.8,
-              repeatType: "reverse",
-            }}
-            style={{
-              background: `radial-gradient(circle at center, ${
-                i % 2 ? 'rgba(251, 191, 36, 0.1)' : 'rgba(249, 115, 22, 0.1)'
-              } 0%, transparent 70%)`,
-              left: `${20 + (i * 15)}%`,
-              top: `${30 + (i * 10)}%`,
-              filter: 'blur(20px)',
-            }}
-          />
-        ))}
-
-        {/* Diagonal lines */}
-        <div className="absolute inset-0" style={{ opacity: 0.1 }}>
-          {[...Array(10)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="absolute h-[150%] w-px bg-gradient-to-b from-transparent via-yellow-500/20 to-transparent"
-              initial={{ opacity: 0, transform: 'translateX(0) rotate(45deg)' }}
-              animate={{ 
-                opacity: [0, 0.5, 0],
-                transform: ['translateX(0) rotate(45deg)', 'translateX(100px) rotate(45deg)']
-              }}
-              transition={{
-                duration: 5,
-                repeat: Infinity,
-                delay: i * 0.5,
-              }}
-              style={{
-                left: `${i * 10}%`,
-                top: '-25%',
-              }}
-            />
-          ))}
-        </div>
-
-        <motion.div
-          className="absolute w-[45rem] h-[45rem] rounded-full bg-amber-500/5 blur-3xl"
-          animate={{
-            x: ["25%", "-25%"],
-            y: ["-20%", "20%"],
-            scale: [1.1, 1, 1.1],
-          }}
-          transition={{
-            duration: 16,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "easeInOut",
-          }}
-          style={{
-            top: "10%",
-            left: "15%",
-          }}
-        />
-        <motion.div
-          className="absolute w-[40rem] h-[40rem] rounded-full bg-orange-500/5 blur-3xl"
-          animate={{
-            x: ["-20%", "20%"],
-            y: ["25%", "-25%"],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 14,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "easeInOut",
-          }}
-          style={{
-            bottom: "15%",
-            right: "10%",
-          }}
-        />
-        <motion.div
-          className="absolute w-[35rem] h-[35rem] rounded-full bg-yellow-500/5 blur-3xl"
-          animate={{
-            x: ["15%", "-15%"],
-            y: ["-15%", "15%"],
-            scale: [1.2, 1, 1.2],
-          }}
-          transition={{
-            duration: 12,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "easeInOut",
-          }}
-          style={{
-            top: "40%",
-            right: "25%",
-          }}
-        />
-      </div>
-
-      <div className="max-w-7xl mx-auto relative z-10 w-full px-4">
+    <section className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 py-20" id="education">
+      <div className="max-w-7xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h2 className="text-5xl font-bold animate-gradient bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+          <h2 className="text-5xl font-bold animate-gradient bg-gradient-to-r from-emerald-400 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
             Learning Roadmap
           </h2>
-          <p className="text-gray-400 mt-4 text-lg">My journey through education and growth</p>
+          <p className="text-gray-400 mt-4 text-lg">My educational journey and professional development</p>
         </motion.div>
 
         <div className="relative">
-          {/* Timeline line */}
-          <motion.div
-            initial={{ height: 0 }}
-            whileInView={{ height: '100%' }}
-            transition={{ duration: 1.5, ease: "easeOut" }}
-            className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-blue-500 to-purple-600 h-full"
-          />
+          {/* Vertical timeline line */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-emerald-500 via-cyan-500 to-blue-500"></div>
 
-          {roadmapData.map((item, index) => (
+          {timelineItems.map((item, index) => (
             <motion.div
-              key={item.title}
+              key={item.type === 'career' ? `career-${item.data.id}` : `cert-${item.data.id}`}
               initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              className={`flex items-center mb-12 ${
-                index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
-              } relative`}
+              transition={{ duration: 0.5, delay: index * 0.2 }}
+              className={`relative flex ${index % 2 === 0 ? 'justify-end' : ''} mb-8`}
             >
-              {/* Timeline node with fixed positioning */}
-              <div className="absolute left-1/2 -translate-x-1/2 inline-flex items-center justify-center">
-                <div className="relative w-12 h-12 transform-gpu">
-                  <motion.div
-                    whileHover="hover"
-                    animate="rest"
-                    variants={{
-                      hover: { scale: 1.2 },
-                      rest: { scale: 1 }
-                    }}
-                    transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                    className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center text-2xl transform-gpu"
-                    style={{ transformOrigin: 'center center' }}
-                  >
-                    {item.icon}
-                  </motion.div>
+              <div className={`w-1/2 ${index % 2 === 0 ? 'pr-12 text-right' : 'pl-12'}`}>
+                <div className="glass-effect tech-border p-6 rounded-lg group hover:shadow-lg transition-all duration-300">
+                  {item.type === 'career' ? (
+                    <div className="flex flex-col gap-2">
+                      <span className="text-sm font-medium text-emerald-400">Education</span>
+                      <h3 className="text-xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-emerald-400 group-hover:to-cyan-500 group-hover:bg-clip-text transition-all duration-300">
+                        {item.data.position}
+                      </h3>
+                      <h4 className="text-lg font-semibold text-cyan-400">
+                        {item.data.company}
+                      </h4>
+                      <p className="text-gray-400 text-sm">
+                        {new Date(item.data.startDate).toLocaleDateString('en-US', { 
+                          month: 'long', 
+                          year: 'numeric' 
+                        })} - {
+                          item.data.current ? 'Present' : 
+                          item.data.endDate ? new Date(item.data.endDate).toLocaleDateString('en-US', { 
+                            month: 'long', 
+                            year: 'numeric' 
+                          }) : ''
+                        }
+                      </p>
+                      <p className="text-gray-300 mt-2">{item.data.description}</p>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col gap-2">
+                      <span className="text-sm font-medium text-blue-400">Certification</span>
+                      <h3 className="text-xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-500 group-hover:bg-clip-text transition-all duration-300">
+                        {item.data.name}
+                      </h3>
+                      <h4 className="text-lg font-semibold text-cyan-400">
+                        {item.data.issuer}
+                      </h4>
+                      <div className="text-gray-400 text-sm space-y-1">
+                        <p>Issued: {new Date(item.data.issueDate).toLocaleDateString('en-US', { 
+                          month: 'long', 
+                          year: 'numeric' 
+                        })}</p>
+                        {item.data.expiryDate && (
+                          <p>Expires: {new Date(item.data.expiryDate).toLocaleDateString('en-US', { 
+                            month: 'long', 
+                            year: 'numeric' 
+                          })}</p>
+                        )}
+                      </div>
+                      {item.data.credentialUrl && (
+                        <a
+                          href={item.data.credentialUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="mt-2 inline-flex items-center text-sm text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
+                        >
+                          View Credential
+                          <svg
+                            className="w-4 h-4 ml-1"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                            />
+                          </svg>
+                        </a>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Content card */}
-              <div className={`w-5/12 ${index % 2 === 0 ? 'pr-16' : 'pl-16'}`}>
-                <motion.div
-                  whileHover={{ scale: 1.03 }}
-                  className="glass-effect tech-pattern matrix-overlay tech-border glow-effect cyber-pulse
-                             rounded-xl p-6 relative overflow-hidden"
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-5`}></div>
-                  <div className="relative z-10 space-y-3">
-                    <motion.h3 
-                      className={`text-2xl font-bold bg-gradient-to-r ${item.gradient} bg-clip-text text-transparent`}
-                    >
-                      {item.title}
-                    </motion.h3>
-                    <p className="text-xl text-gray-300">{item.institution}</p>
-                    <p className="text-gray-400">{item.period}</p>
-                    <p className="text-gray-300 text-sm">{item.description}</p>
-                  </div>
-                </motion.div>
-              </div>
+              {/* Timeline dot */}
+              <div className={`absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full ${
+                item.type === 'career' 
+                  ? 'bg-gradient-to-r from-emerald-500 to-cyan-500' 
+                  : 'bg-gradient-to-r from-cyan-500 to-blue-500'
+              } border-2 border-gray-900`}></div>
             </motion.div>
           ))}
         </div>
@@ -234,4 +177,4 @@ const EducationSection = () => {
   );
 };
 
-export default EducationSection;
+export default LearningRoadmapSection;
