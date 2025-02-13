@@ -1,5 +1,4 @@
 import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
 
 export default async function AdminLayout({
   children,
@@ -7,10 +6,6 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession();
-  
-  if (!session) {
-    redirect('/admin/login');
-  }
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -22,9 +17,11 @@ export default async function AdminLayout({
                 <h1 className="text-xl font-bold">Admin Dashboard</h1>
               </div>
             </div>
-            <div className="flex items-center">
-              <span className="text-gray-700">{session.user?.email}</span>
-            </div>
+            {session?.user && (
+              <div className="flex items-center">
+                <span className="text-gray-700">{session.user.email}</span>
+              </div>
+            )}
           </div>
         </div>
       </nav>

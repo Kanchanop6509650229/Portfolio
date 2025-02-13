@@ -1,14 +1,32 @@
 'use client';
 
-import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { useState, useEffect } from 'react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/Card';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (session) {
+      router.replace('/admin');
+    }
+  }, [session, router]);
+
+  // Don't show login form if checking authentication
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
+
+  // Don't show login form if already authenticated
+  if (session) {
+    return null;
+  }
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -26,8 +44,7 @@ export default function LoginPage() {
       setError('Invalid credentials');
       setLoading(false);
     } else {
-      router.push('/admin');
-      router.refresh();
+      router.replace('/admin');
     }
   }
 
@@ -80,3 +97,4 @@ export default function LoginPage() {
       </Card>
     </div>
   );
+}

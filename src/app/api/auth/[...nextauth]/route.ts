@@ -35,26 +35,27 @@ const handler = NextAuth({
       }
     })
   ],
-  session: {
-    strategy: 'jwt',
-  },
   pages: {
     signIn: '/admin/login',
+    error: '/admin/login',
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.role = user.role;
+        token.id = user.id;
       }
       return token;
     },
     async session({ session, token }) {
       if (session?.user) {
-        session.user.role = token.role;
+        session.user.role = token.role as string;
+        session.user.id = token.id as string;
       }
       return session;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 })
 
 export { handler as GET, handler as POST }
