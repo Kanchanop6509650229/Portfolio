@@ -36,59 +36,74 @@ export default function CareerPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400">
           Career Management
         </h2>
       </div>
 
-      <CareerForm 
-        experience={editingCareer}
-        onSuccess={() => {
-          loadCareers();
-          setEditingCareer(null);
-        }}
-      />
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {careers.map((career) => (
-          <Card key={career.id} className="glass-effect tech-border p-6 group">
-            <div className="flex justify-between items-start">
-              <div className="space-y-2">
-                <h3 className="font-semibold text-lg group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-500 group-hover:bg-clip-text transition-all duration-300">
-                  {career.university}
-                </h3>
-                <p className="text-cyan-400">{career.degree}</p>
-                <p className="text-sm text-gray-400">
-                  {new Date(career.startDate).toLocaleDateString('en-US', { 
-                    month: 'long',
-                    year: 'numeric'
-                  })} - {
-                    career.endDate ? new Date(career.endDate).toLocaleDateString('en-US', { 
-                      month: 'long',
-                      year: 'numeric'
-                    }) : ''
-                  }
-                </p>
-                <p className="text-gray-300 mt-2 line-clamp-3">{career.description}</p>
-              </div>
-              <div className="space-x-2">
-                <button 
-                  onClick={() => setEditingCareer(career)}
-                  className="text-cyan-400 hover:text-cyan-300 transition-colors duration-300"
-                >
-                  Edit
-                </button>
-                <button 
-                  onClick={() => handleDelete(career.id)}
-                  className="text-red-400 hover:text-red-300 transition-colors duration-300"
-                >
-                  Delete
-                </button>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <Card className="p-6 overflow-hidden">
+            <div className="overflow-x-auto">
+              <div className="grid grid-cols-1 gap-4">
+                {careers.map((career) => (
+                  <div key={career.id} className="glass-effect tech-border p-4 rounded-lg group">
+                    <div className="flex justify-between items-start">
+                      <div className="space-y-2">
+                        <h3 className="font-semibold text-lg group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-blue-400 group-hover:to-cyan-500 group-hover:bg-clip-text transition-all duration-300">
+                          {career.university}
+                        </h3>
+                        <p className="text-cyan-400">{career.degree}</p>
+                        <p className="text-sm text-gray-400">
+                          {new Date(career.startDate).toLocaleDateString('en-US', { 
+                            month: 'long', 
+                            year: 'numeric' 
+                          })} - {
+                            career.endDate ? new Date(career.endDate).toLocaleDateString('en-US', { 
+                              month: 'long', 
+                              year: 'numeric' 
+                            }) : 'Present'
+                          }
+                        </p>
+                        <p className="text-gray-600 dark:text-gray-300">{career.description}</p>
+                      </div>
+                      <div className="space-x-2">
+                        <button
+                          onClick={() => setEditingCareer(career)}
+                          className="text-blue-600 hover:text-blue-800 dark:text-blue-400"
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(career.id)}
+                          className="text-red-600 hover:text-red-800 dark:text-red-400"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </Card>
-        ))}
+        </div>
+
+        <div>
+          <Card className="p-6 sticky top-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+              {editingCareer ? 'Edit Career Entry' : 'Add New Career Entry'}
+            </h3>
+            <CareerForm
+              experience={editingCareer}
+              onSuccess={() => {
+                loadCareers();
+                setEditingCareer(null);
+              }}
+            />
+          </Card>
+        </div>
       </div>
     </div>
   );

@@ -3,14 +3,26 @@
 import { useState } from 'react';
 import { Card } from '@/components/ui/Card';
 
-export default function SkillForm({ skill = null, onSuccess = () => {} }) {
+interface Skill {
+  id: number;
+  name: string;
+  category: string;
+  proficiency: number;
+}
+
+interface SkillFormProps {
+  skill: Skill | null;
+  onSuccess: () => void;
+}
+
+export default function SkillForm({ skill = null, onSuccess = () => {} }: SkillFormProps) {
   const [formData, setFormData] = useState({
     name: skill?.name || '',
     category: skill?.category || '',
     proficiency: skill?.proficiency || 3
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await fetch('/api/skills', {
