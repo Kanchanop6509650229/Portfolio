@@ -106,7 +106,7 @@ const EducationSection = () => {
                           item.data.endDate ? new Date(item.data.endDate).toLocaleDateString('en-US', { 
                             month: 'long', 
                             year: 'numeric' 
-                          }) : ''
+                          }) : 'Present'
                         }
                       </p>
                       <p className="text-gray-300 mt-2">{item.data.description}</p>

@@ -87,7 +87,7 @@ export default function CareerForm({ experience = null, onSuccess = () => {} }) 
 
             <div>
               <label className="block text-sm font-medium text-cyan-400">
-                End Date
+                End Date (Optional)
                 <input
                   type="date"
                   className="mt-1 block w-full rounded-lg border-0 bg-gray-800/50 text-white shadow-sm ring-1 ring-inset ring-gray-700 focus:ring-2 focus:ring-cyan-500 tech-border disabled:opacity-50 disabled:cursor-not-allowed"
