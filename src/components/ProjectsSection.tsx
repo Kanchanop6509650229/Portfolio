@@ -15,27 +15,6 @@ const projectData = [
     tech: ['Three.js', 'TensorFlow.js', 'WebGL', 'React'],
     gradient: 'from-blue-600 to-cyan-500',
     github: 'https://github.com/yourusername/neural-network-viz'
-  },
-  {
-    title: 'Quantum Computing Simulator',
-    description: 'Web-based quantum circuit simulator with visual programming interface.',
-    tech: ['TypeScript', 'WebAssembly', 'Rust'],
-    gradient: 'from-purple-600 to-pink-500',
-    github: 'https://github.com/yourusername/quantum-sim'
-  },
-  {
-    title: 'Edge Computing Platform',
-    description: 'Distributed computing platform for IoT devices with real-time analytics.',
-    tech: ['Kubernetes', 'Rust', 'gRPC', 'InfluxDB'],
-    gradient: 'from-green-500 to-emerald-400',
-    github: 'https://github.com/yourusername/edge-platform'
-  },
-  {
-    title: 'Blockchain Analytics',
-    description: 'Real-time blockchain data analysis and visualization platform.',
-    tech: ['Web3.js', 'D3.js', 'Node.js', 'MongoDB'],
-    gradient: 'from-orange-500 to-yellow-400',
-    github: 'https://github.com/yourusername/blockchain-analytics'
   }
 ];
 
