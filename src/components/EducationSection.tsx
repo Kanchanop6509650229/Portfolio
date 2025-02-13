@@ -21,7 +21,7 @@ interface Certificate {
   credentialUrl: string | null;
 }
 
-const LearningRoadmapSection = () => {
+const EducationSection = () => {
   const [careers, setCareers] = useState<Career[]>([]);
   const [certificates, setCertificates] = useState<Certificate[]>([]);
 
@@ -177,4 +177,4 @@ const LearningRoadmapSection = () => {
   );
 };
 
-export default LearningRoadmapSection;
+export default EducationSection;
