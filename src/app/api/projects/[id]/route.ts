@@ -19,6 +19,7 @@ export async function GET(
     
     return NextResponse.json(project);
   } catch (error) {
+    console.error('Error fetching project:', error);
     return NextResponse.json({ error: 'Failed to fetch project' }, { status: 500 });
   }
 }
@@ -37,11 +38,18 @@ export async function PATCH(
     const data = await req.json();
     const project = await prisma.project.update({
       where: { id: parseInt(params.id) },
-      data: data
+      data: {
+        title: data.title,
+        description: data.description,
+        technologies: data.technologies,
+        githubUrl: data.githubUrl,
+        featured: data.featured
+      }
     });
     
     return NextResponse.json(project);
   } catch (error) {
+    console.error('Error updating project:', error);
     return NextResponse.json({ error: 'Failed to update project' }, { status: 500 });
   }
 }
@@ -63,6 +71,7 @@ export async function DELETE(
     
     return NextResponse.json({ success: true });
   } catch (error) {
+    console.error('Error deleting project:', error);
     return NextResponse.json({ error: 'Failed to delete project' }, { status: 500 });
   }
 }

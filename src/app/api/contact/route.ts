@@ -20,15 +20,17 @@ export async function POST(req: NextRequest) {
         name: validated.name,
         email: validated.email,
         message: validated.message,
+        status: 'pending'
       }
     });
 
-    return NextResponse.json({ success: true, id: contact.id });
+    return NextResponse.json(contact);
   } catch (error) {
+    console.error('Error creating contact:', error);
     if (error instanceof z.ZodError) {
       return NextResponse.json({ error: error.errors }, { status: 400 });
     }
-    return NextResponse.json({ error: 'Failed to submit contact form' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to create contact' }, { status: 500 });
   }
 }
 

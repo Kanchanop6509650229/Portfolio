@@ -54,3 +54,35 @@ model Analytics {
   countryCode   String?
   deviceType    String?
 }
+
+model Skill {
+  id          Int      @id @default(autoincrement())
+  name        String
+  category    String
+  proficiency Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Career {
+  id          Int      @id @default(autoincrement())
+  company     String
+  position    String
+  startDate   DateTime
+  endDate     DateTime?
+  description String   @db.Text
+  current     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Certificate {
+  id          Int      @id @default(autoincrement())
+  name        String
+  issuer      String
+  issueDate   DateTime
+  expiryDate  DateTime?
+  credentialUrl String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

@@ -1,5 +1,3 @@
-import { getServerSession } from 'next-auth';
-
 export default function AdminLayout({
   children,
 }: {

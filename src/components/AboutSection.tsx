@@ -1,5 +1,4 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { RefObject } from 'react';
 
 const AboutSection = () => {
   const { scrollYProgress } = useScroll({
