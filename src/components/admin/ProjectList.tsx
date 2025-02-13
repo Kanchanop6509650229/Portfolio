@@ -24,26 +24,9 @@ export default function ProjectList({ projects }: ProjectListProps) {
       
       if (!res.ok) throw new Error('Failed to delete project');
       router.refresh();
-    } catch (error) {
+    } catch (err) {
+      console.error('Failed to delete project:', err);
       alert('Failed to delete project');
-    } finally {
-      setLoading(null);
-    }
-  }
-
-  async function toggleFeatured(id: number, featured: boolean) {
-    setLoading(id);
-    try {
-      const res = await fetch(`/api/projects/${id}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ featured: !featured }),
-      });
-      
-      if (!res.ok) throw new Error('Failed to update project');
-      router.refresh();
-    } catch (error) {
-      alert('Failed to update project');
     } finally {
       setLoading(null);
     }
@@ -65,12 +48,12 @@ export default function ProjectList({ projects }: ProjectListProps) {
                 {project.description}
               </p>
               <div className="mt-2 flex items-center gap-2">
-                {project.tags?.split(',').map((tag) => (
+                {project.technologies.split(',').map((tech: string) => (
                   <span 
-                    key={tag}
+                    key={tech}
                     className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
                   >
-                    {tag.trim()}
+                    {tech.trim()}
                   </span>
                 ))}
               </div>
@@ -79,18 +62,22 @@ export default function ProjectList({ projects }: ProjectListProps) {
               <button 
                 className="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 title="View"
+                onClick={() => router.push(`/admin/projects/${project.id}`)}
               >
                 <FiEye className="w-5 h-5" />
               </button>
               <button 
                 className="p-2 text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 title="Edit"
+                onClick={() => router.push(`/admin/projects/edit/${project.id}`)}
               >
                 <FiEdit2 className="w-5 h-5" />
               </button>
               <button 
                 className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 title="Delete"
+                onClick={() => handleDelete(project.id)}
+                disabled={loading === project.id}
               >
                 <FiTrash2 className="w-5 h-5" />
               </button>
