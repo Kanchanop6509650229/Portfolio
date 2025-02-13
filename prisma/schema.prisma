@@ -44,17 +44,6 @@ model Contact {
   updatedAt DateTime @updatedAt
 }
 
-model Analytics {
-  id            Int      @id @default(autoincrement())
-  pageUrl       String
-  visitorIp     String?
-  userAgent     String?
-  referrer      String?
-  visitDate     DateTime @default(now())
-  countryCode   String?
-  deviceType    String?
-}
-
 model Skill {
   id          Int      @id @default(autoincrement())
   name        String

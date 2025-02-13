@@ -13,34 +13,67 @@ import {
   SiDocker
 } from 'react-icons/si';
 import { VscCode } from 'react-icons/vsc';
+import { useEffect, useState } from 'react';
+import { getSkills } from '@/lib/api';
 
-const skillsData = {
-  'Programming Languages': [
-    { name: 'JavaScript', gradient: 'from-yellow-400 to-orange-500', icon: SiJavascript },
-    { name: 'TypeScript', gradient: 'from-blue-400 to-blue-600', icon: SiTypescript },
-    { name: 'Python', gradient: 'from-blue-500 to-indigo-500', icon: SiPython },
-  ],
-  'Front-end': [
-    { name: 'React', gradient: 'from-cyan-400 to-blue-500', icon: SiReact },
-    { name: 'HTML/CSS', gradient: 'from-orange-400 to-red-500', icon: SiHtml5 },
-    { name: 'Tailwind CSS', gradient: 'from-teal-400 to-cyan-500', icon: SiTailwindcss },
-  ],
-  'Back-end': [
-    { name: 'Node.js', gradient: 'from-green-400 to-green-600', icon: SiNodedotjs },
-    { name: 'Express.js', gradient: 'from-gray-400 to-gray-600', icon: SiExpress },
-    { name: 'SQL', gradient: 'from-orange-400 to-pink-500', icon: SiMysql },
-  ],
-  'Tools': [
-    { name: 'Git', gradient: 'from-red-400 to-orange-500', icon: SiGit },
-    { name: 'VS Code', gradient: 'from-blue-500 to-indigo-600', icon: VscCode },
-    { name: 'Docker', gradient: 'from-blue-400 to-cyan-500', icon: SiDocker },
-  ]
+const iconMap: { [key: string]: any } = {
+  JavaScript: SiJavascript,
+  TypeScript: SiTypescript,
+  Python: SiPython,
+  React: SiReact,
+  HTML: SiHtml5,
+  'Tailwind CSS': SiTailwindcss,
+  'Node.js': SiNodedotjs,
+  Express: SiExpress,
+  MySQL: SiMysql,
+  Git: SiGit,
+  Docker: SiDocker,
+};
+
+const gradientMap: { [key: string]: string } = {
+  JavaScript: 'from-yellow-400 to-orange-500',
+  TypeScript: 'from-blue-400 to-blue-600',
+  Python: 'from-blue-500 to-indigo-500',
+  React: 'from-cyan-400 to-blue-500',
+  HTML: 'from-orange-400 to-red-500',
+  'Tailwind CSS': 'from-teal-400 to-cyan-500',
+  'Node.js': 'from-green-400 to-green-600',
+  Express: 'from-gray-400 to-gray-600',
+  MySQL: 'from-orange-400 to-pink-500',
+  Git: 'from-red-400 to-orange-500',
+  Docker: 'from-blue-400 to-cyan-500',
 };
 
 const SkillsSection = () => {
+  const [skillsByCategory, setSkillsByCategory] = useState<{ [key: string]: any[] }>({});
   const { scrollYProgress } = useScroll({
     offset: ["start end", "end start"]
   });
+
+  useEffect(() => {
+    const fetchSkills = async () => {
+      try {
+        const skills = await getSkills();
+        const grouped = skills.reduce((acc: { [key: string]: any[] }, skill: any) => {
+          if (!acc[skill.category]) {
+            acc[skill.category] = [];
+          }
+          acc[skill.category].push({
+            name: skill.name,
+            proficiency: skill.proficiency,
+            gradient: gradientMap[skill.name] || 'from-gray-400 to-gray-600',
+            icon: iconMap[skill.name] || VscCode
+          });
+          return acc;
+        }, {});
+        setSkillsByCategory(grouped);
+      } catch (error) {
+        console.error('Failed to fetch skills:', error);
+      }
+    };
+
+    fetchSkills();
+  }, []);
 
   const backgroundScale = useTransform(scrollYProgress, [0, 0.5, 1], [0.8, 1, 0.8]);
   const backgroundOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [0.3, 0.5, 0.3]);
@@ -115,7 +148,7 @@ const SkillsSection = () => {
         </motion.div>
 
         <div className="space-y-12">
-          {Object.entries(skillsData).map(([category, skills], categoryIndex) => (
+          {Object.entries(skillsByCategory).map(([category, skills], categoryIndex) => (
             <motion.div
               key={category}
               initial={{ opacity: 0 }}
@@ -168,6 +201,13 @@ const SkillsSection = () => {
                         >
                           {skill.name}
                         </motion.span>
+                        
+                        <div className="absolute bottom-1 left-0 w-full h-1 bg-gray-700 rounded">
+                          <div 
+                            className={`h-full rounded bg-gradient-to-r ${skill.gradient}`}
+                            style={{ width: `${(skill.proficiency / 5) * 100}%` }}
+                          />
+                        </div>
 
                         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-0 group-hover:opacity-60 transition-opacity duration-300" />
                       </motion.div>
