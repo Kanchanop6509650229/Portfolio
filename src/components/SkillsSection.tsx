@@ -1,33 +1,93 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { 
-  SiJavascript, 
-  SiTypescript, 
-  SiPython, 
-  SiReact, 
-  SiHtml5, 
-  SiTailwindcss, 
-  SiNodedotjs, 
-  SiExpress, 
-  SiMysql,
-  SiGit,
-  SiDocker
-} from 'react-icons/si';
+import * as SiIcons from 'react-icons/si';
+import * as DiIcons from 'react-icons/di';
+import * as FaIcons from 'react-icons/fa';
+import * as IoIcons from 'react-icons/io';
+import * as Io5Icons from 'react-icons/io5';
+import * as BiIcons from 'react-icons/bi';
+import * as RiIcons from 'react-icons/ri';
 import { VscCode } from 'react-icons/vsc';
 import { useEffect, useState } from 'react';
 import { getSkills } from '@/lib/api';
+import { IconType } from 'react-icons';
 
-const iconMap: { [key: string]: any } = {
-  JavaScript: SiJavascript,
-  TypeScript: SiTypescript,
-  Python: SiPython,
-  React: SiReact,
-  HTML: SiHtml5,
-  'Tailwind CSS': SiTailwindcss,
-  'Node.js': SiNodedotjs,
-  Express: SiExpress,
-  MySQL: SiMysql,
-  Git: SiGit,
-  Docker: SiDocker,
+interface Skill {
+  name: string;
+  category: string;
+  proficiency: number;
+}
+
+interface ProcessedSkill {
+  name: string;
+  proficiency: number;
+  gradient: string;
+  icon: IconType;
+}
+
+// Combine all icon sets
+const allIcons: { [key: string]: IconType } = {
+  ...SiIcons,
+  ...DiIcons,
+  ...FaIcons,
+  ...IoIcons,
+  ...Io5Icons,
+  ...BiIcons,
+  ...RiIcons,
+};
+
+// Function to find the best matching icon for a skill
+const findIcon = (skillName: string): IconType => {
+  // Try different icon naming patterns
+  const possibleNames = [
+    `Si${skillName.replace(/[^a-zA-Z0-9]/g, '')}`,
+    `Di${skillName.replace(/[^a-zA-Z0-9]/g, '')}`,
+    `Fa${skillName.replace(/[^a-zA-Z0-9]/g, '')}`,
+    `Io${skillName.replace(/[^a-zA-Z0-9]/g, '')}`,
+    `Ri${skillName.replace(/[^a-zA-Z0-9]/g, '')}`
+  ];
+
+  // Find the first matching icon
+  for (const name of possibleNames) {
+    if (allIcons[name]) {
+      return allIcons[name];
+    }
+  }
+
+  // Return default icon if no match found
+  return VscCode;
+};
+
+// Dynamic icon mapping
+interface IconMapInterface extends Record<string, IconType | ((name: string) => IconType)> {
+  JavaScript: IconType;
+  TypeScript: IconType;
+  Python: IconType;
+  React: IconType;
+  HTML: IconType;
+  'Tailwind CSS': IconType;
+  'Node.js': IconType;
+  Express: IconType;
+  MySQL: IconType;
+  Git: IconType;
+  Docker: IconType;
+  get(name: string): IconType;
+}
+
+const iconMap: IconMapInterface = {
+  JavaScript: SiIcons.SiJavascript,
+  TypeScript: SiIcons.SiTypescript,
+  Python: SiIcons.SiPython,
+  React: SiIcons.SiReact,
+  HTML: SiIcons.SiHtml5,
+  'Tailwind CSS': SiIcons.SiTailwindcss,
+  'Node.js': SiIcons.SiNodedotjs,
+  Express: SiIcons.SiExpress,
+  MySQL: SiIcons.SiMysql,
+  Git: SiIcons.SiGit,
+  Docker: SiIcons.SiDocker,
+  get(name: string): IconType {
+    return (name in this && this[name] !== this.get) ? (this[name] as IconType) : findIcon(name);
+  }
 };
 
 const gradientMap: { [key: string]: string } = {
@@ -45,7 +105,7 @@ const gradientMap: { [key: string]: string } = {
 };
 
 const SkillsSection = () => {
-  const [skillsByCategory, setSkillsByCategory] = useState<{ [key: string]: any[] }>({});
+  const [skillsByCategory, setSkillsByCategory] = useState<{ [key: string]: ProcessedSkill[] }>({});
   const { scrollYProgress } = useScroll({
     offset: ["start end", "end start"]
   });
@@ -54,7 +114,7 @@ const SkillsSection = () => {
     const fetchSkills = async () => {
       try {
         const skills = await getSkills();
-        const grouped = skills.reduce((acc: { [key: string]: any[] }, skill: any) => {
+        const grouped = skills.reduce((acc: { [key: string]: ProcessedSkill[] }, skill: Skill) => {
           if (!acc[skill.category]) {
             acc[skill.category] = [];
           }
@@ -62,7 +122,7 @@ const SkillsSection = () => {
             name: skill.name,
             proficiency: skill.proficiency,
             gradient: gradientMap[skill.name] || 'from-gray-400 to-gray-600',
-            icon: iconMap[skill.name] || VscCode
+            icon: iconMap.get(skill.name)
           });
           return acc;
         }, {});
