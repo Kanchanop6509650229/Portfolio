@@ -7,7 +7,7 @@ interface CareerExperience {
   degree: string;
   university: string;
   startDate: string;
-  endDate?: string;
+  endDate: string | null;
   description: string;
   current: boolean;
 }

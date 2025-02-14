@@ -1,8 +1,22 @@
-"use client";
+'use client';
 
 import { useState } from 'react';
 
-export default function CertificateForm({ certificate = null, onSuccess = () => {} }) {
+interface Certificate {
+  id?: number;
+  name: string;
+  issuer: string;
+  issueDate: string;
+  expiryDate: string | null;
+  credentialUrl: string | null;
+}
+
+interface CertificateFormProps {
+  certificate: Certificate | null;
+  onSuccess: () => void;
+}
+
+export default function CertificateForm({ certificate = null, onSuccess = () => {} }: CertificateFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [formData, setFormData] = useState({
@@ -13,7 +27,7 @@ export default function CertificateForm({ certificate = null, onSuccess = () => 
     credentialUrl: certificate?.credentialUrl || ''
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError('');
