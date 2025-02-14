@@ -3,7 +3,7 @@
 import type { HTMLAttributes } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FiEdit2, FiTrash2, FiExternalLink } from 'react-icons/fi';
+import { FiEdit2, FiTrash2, FiExternalLink, FiEye } from 'react-icons/fi';
 
 interface Certificate {
   id: number;
@@ -62,27 +62,37 @@ export default function CertificateList({ certificates, onEdit, className, ...pr
                 {cert.expiryDate && ` · Expires: ${new Date(cert.expiryDate).toLocaleDateString()}`}
               </p>
             </div>
-            <div className="flex items-center gap-2 ml-4">
+            <div className="ml-4 flex items-center gap-2">
+              <button
+                onClick={() => router.push(`/admin/certificates/${cert.id}`)}
+                title="View"
+                className="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <FiEye className="w-5 h-5" />
+              </button>
               {cert.credentialUrl && (
                 <a
                   href={cert.credentialUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
+                  title="View Certificate"
+                  className="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                   <FiExternalLink className="w-5 h-5" />
                 </a>
               )}
               <button
                 onClick={() => onEdit(cert)}
-                className="p-2 text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
+                title="Edit"
+                className="p-2 text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               >
                 <FiEdit2 className="w-5 h-5" />
               </button>
               <button
                 onClick={() => handleDelete(cert.id)}
                 disabled={loading === cert.id}
-                className="p-2 text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors disabled:opacity-50"
+                title="Delete"
+                className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               >
                 <FiTrash2 className="w-5 h-5" />
               </button>
@@ -90,6 +100,12 @@ export default function CertificateList({ certificates, onEdit, className, ...pr
           </div>
         </div>
       ))}
+
+      {certificates.length === 0 && (
+        <div className="py-6 text-center text-gray-500 dark:text-gray-400">
+          No certificates found. Create your first certificate!
+        </div>
+      )}
     </div>
   );
 }

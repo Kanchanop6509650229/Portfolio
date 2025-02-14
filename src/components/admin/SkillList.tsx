@@ -3,7 +3,7 @@
 import type { HTMLAttributes } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FiEdit2, FiTrash2 } from 'react-icons/fi';
+import { FiEdit2, FiTrash2, FiEye } from 'react-icons/fi';
 
 interface Skill {
   id: number;
@@ -17,7 +17,7 @@ interface SkillListProps extends HTMLAttributes<HTMLDivElement> {
   onEdit: (skill: Skill) => void;
 }
 
-export default function SkillList({ skills, onEdit, className, ...props }: SkillListProps) {
+export default function SkillList({ skills, onEdit, ...props }: SkillListProps) {
   const router = useRouter();
   const [loading, setLoading] = useState<number | null>(null);
 
@@ -41,7 +41,7 @@ export default function SkillList({ skills, onEdit, className, ...props }: Skill
   }
 
   return (
-    <div className={`divide-y divide-gray-200 dark:divide-gray-700 ${className || ''}`} {...props}>
+    <div className="divide-y divide-gray-200 dark:divide-gray-700">
       {skills.map((skill) => (
         <div 
           key={skill.id}
@@ -62,17 +62,26 @@ export default function SkillList({ skills, onEdit, className, ...props }: Skill
                 />
               </div>
             </div>
-            <div className="flex items-center gap-2 ml-4">
+            <div className="ml-4 flex items-center gap-2">
+              <button
+                onClick={() => router.push(`/admin/skills/${skill.id}`)}
+                title="View"
+                className="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <FiEye className="w-5 h-5" />
+              </button>
               <button
                 onClick={() => onEdit(skill)}
-                className="p-2 text-gray-500 hover:text-blue-500 dark:text-gray-400 dark:hover:text-blue-400 transition-colors"
+                title="Edit"
+                className="p-2 text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               >
                 <FiEdit2 className="w-5 h-5" />
               </button>
               <button
                 onClick={() => handleDelete(skill.id)}
                 disabled={loading === skill.id}
-                className="p-2 text-gray-500 hover:text-red-500 dark:text-gray-400 dark:hover:text-red-400 transition-colors disabled:opacity-50"
+                title="Delete"
+                className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               >
                 <FiTrash2 className="w-5 h-5" />
               </button>
@@ -80,6 +89,12 @@ export default function SkillList({ skills, onEdit, className, ...props }: Skill
           </div>
         </div>
       ))}
+
+      {skills.length === 0 && (
+        <div className="py-6 text-center text-gray-500 dark:text-gray-400">
+          No skills found. Create your first skill!
+        </div>
+      )}
     </div>
   );
 }
