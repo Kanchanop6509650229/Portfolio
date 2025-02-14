@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function AdminLayout({
   children,
 }: {
@@ -8,9 +10,11 @@ export default function AdminLayout({
       <div className="container mx-auto px-4 py-8">
         <header className="mb-8">
           <div className="flex items-center justify-between">
-            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400">
-              Admin Dashboard
-            </h1>
+            <Link href="/admin" className="hover:opacity-80 transition-opacity">
+              <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400">
+                Admin Dashboard
+              </h1>
+            </Link>
           </div>
         </header>
         <main className="relative">
