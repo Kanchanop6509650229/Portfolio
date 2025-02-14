@@ -14,6 +14,13 @@ interface SkillFormProps {
   onSuccess: () => void;
 }
 
+const SKILL_CATEGORIES = [
+  'Programming Language',
+  'Front-end',
+  'Back-end',
+  'Tools'
+] as const;
+
 export default function SkillForm({ skill = null, onSuccess = () => {} }: SkillFormProps) {
   const [formData, setFormData] = useState({
     name: skill?.name || '',
@@ -68,14 +75,20 @@ export default function SkillForm({ skill = null, onSuccess = () => {} }: SkillF
         <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Category
         </label>
-        <input
-          type="text"
+        <select
           id="category"
           required
           className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
           value={formData.category}
           onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-        />
+        >
+          <option value="">Select a category</option>
+          {SKILL_CATEGORIES.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
       </div>
 
       <div>
