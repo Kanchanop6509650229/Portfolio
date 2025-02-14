@@ -30,7 +30,7 @@ export default function CareerList({ careers, onEdit, className, ...props }: Car
     setLoading(id);
     try {
       const res = await fetch(`/api/career/${id}`, {
-        method: 'DELETE',
+        method: 'DELETE'
       });
       
       if (!res.ok) throw new Error('Failed to delete career entry');

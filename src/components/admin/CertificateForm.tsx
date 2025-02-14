@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Certificate {
   id?: number;
@@ -17,15 +17,27 @@ interface CertificateFormProps {
 }
 
 export default function CertificateForm({ certificate = null, onSuccess = () => {} }: CertificateFormProps) {
+  const [formData, setFormData] = useState({
+    name: '',
+    issuer: '',
+    issueDate: '',
+    expiryDate: '',
+    credentialUrl: ''
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [formData, setFormData] = useState({
-    name: certificate?.name || '',
-    issuer: certificate?.issuer || '',
-    issueDate: certificate?.issueDate ? new Date(certificate.issueDate).toISOString().split('T')[0] : '',
-    expiryDate: certificate?.expiryDate ? new Date(certificate.expiryDate).toISOString().split('T')[0] : '',
-    credentialUrl: certificate?.credentialUrl || ''
-  });
+
+  useEffect(() => {
+    if (certificate) {
+      setFormData({
+        name: certificate.name,
+        issuer: certificate.issuer,
+        issueDate: certificate.issueDate.split('T')[0],
+        expiryDate: certificate.expiryDate ? certificate.expiryDate.split('T')[0] : '',
+        credentialUrl: certificate.credentialUrl || ''
+      });
+    }
+  }, [certificate]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,10 +45,17 @@ export default function CertificateForm({ certificate = null, onSuccess = () => 
     setError('');
 
     try {
-      const response = await fetch('/api/certificates', {
-        method: certificate ? 'PUT' : 'POST',
+      const url = certificate ? `/api/certificates/${certificate.id}` : '/api/certificates';
+      const method = certificate ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(certificate ? { ...formData, id: certificate.id } : formData),
+        body: JSON.stringify({
+          ...formData,
+          expiryDate: formData.expiryDate || null,
+          credentialUrl: formData.credentialUrl || null
+        }),
       });
 
       if (!response.ok) throw new Error('Failed to save certificate');
@@ -76,7 +95,7 @@ export default function CertificateForm({ certificate = null, onSuccess = () => 
 
       <div>
         <label htmlFor="issuer" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-          Issuing Organization
+          Issuer
         </label>
         <input
           type="text"

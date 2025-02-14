@@ -27,7 +27,7 @@ export default function SkillList({ skills, onEdit, ...props }: SkillListProps) 
     setLoading(id);
     try {
       const res = await fetch(`/api/skills/${id}`, {
-        method: 'DELETE',
+        method: 'DELETE'
       });
       
       if (!res.ok) throw new Error('Failed to delete skill');

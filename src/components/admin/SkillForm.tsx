@@ -1,16 +1,14 @@
 "use client";
 
-import { useState } from 'react';
-
-interface Skill {
-  id: number;
-  name: string;
-  category: string;
-  proficiency: number;
-}
+import { useState, useEffect } from 'react';
 
 interface SkillFormProps {
-  skill: Skill | null;
+  skill: {
+    id: number;
+    name: string;
+    category: string;
+    proficiency: number;
+  } | null;
   onSuccess: () => void;
 }
 
@@ -23,12 +21,22 @@ const SKILL_CATEGORIES = [
 
 export default function SkillForm({ skill = null, onSuccess = () => {} }: SkillFormProps) {
   const [formData, setFormData] = useState({
-    name: skill?.name || '',
-    category: skill?.category || '',
-    proficiency: skill?.proficiency || 3
+    name: '',
+    category: '',
+    proficiency: 3
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (skill) {
+      setFormData({
+        name: skill.name,
+        category: skill.category,
+        proficiency: skill.proficiency
+      });
+    }
+  }, [skill]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,10 +44,13 @@ export default function SkillForm({ skill = null, onSuccess = () => {} }: SkillF
     setError('');
 
     try {
-      const response = await fetch('/api/skills', {
-        method: skill ? 'PUT' : 'POST',
+      const url = skill ? `/api/skills/${skill.id}` : '/api/skills';
+      const method = skill ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(skill ? { ...formData, id: skill.id } : formData),
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) throw new Error('Failed to save skill');

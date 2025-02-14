@@ -1,44 +1,63 @@
 "use client";
 
-import { useState } from 'react';
-
-interface CareerExperience {
-  id?: number;
-  degree: string;
-  university: string;
-  startDate: string;
-  endDate: string | null;
-  description: string;
-  current: boolean;
-}
+import { useState, useEffect } from 'react';
 
 interface CareerFormProps {
-  experience?: CareerExperience | null;
-  onSuccess?: () => void;
+  experience: {
+    id: number;
+    degree: string;
+    university: string;
+    startDate: string;
+    endDate: string | null;
+    description: string;
+    current: boolean;
+  } | null;
+  onSuccess: () => void;
 }
 
 export default function CareerForm({ experience = null, onSuccess = () => {} }: CareerFormProps) {
   const [formData, setFormData] = useState({
-    degree: experience?.degree || '',
-    university: experience?.university || '',
-    startDate: experience?.startDate ? new Date(experience.startDate).toISOString().split('T')[0] : '',
-    endDate: experience?.endDate ? new Date(experience.endDate).toISOString().split('T')[0] : '',
-    description: experience?.description || '',
-    current: experience?.current || false
+    degree: '',
+    university: '',
+    startDate: '',
+    endDate: '',
+    description: '',
+    current: false
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  useEffect(() => {
+    if (experience) {
+      setFormData({
+        degree: experience.degree,
+        university: experience.university,
+        startDate: experience.startDate.split('T')[0], // Convert to YYYY-MM-DD
+        endDate: experience.endDate ? experience.endDate.split('T')[0] : '',
+        description: experience.description,
+        current: experience.current
+      });
+    }
+  }, [experience]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      const response = await fetch('/api/career', {
-        method: experience ? 'PUT' : 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(experience ? { ...formData, id: experience.id } : formData),
+      const url = experience ? `/api/career/${experience.id}` : '/api/career';
+      const method = experience ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          endDate: formData.current ? null : formData.endDate || null
+        }),
       });
 
       if (!response.ok) throw new Error('Failed to save career experience');
@@ -157,7 +176,7 @@ export default function CareerForm({ experience = null, onSuccess = () => {} }: 
         disabled={loading}
         className="w-full px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 dark:from-blue-500 dark:to-cyan-500 dark:hover:from-blue-600 dark:hover:to-cyan-600 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        {loading ? 'Saving...' : (experience ? 'Update Experience' : 'Add Experience')}
+        {loading ? 'Saving...' : (experience ? 'Update Career Entry' : 'Add Career Entry')}
       </button>
     </form>
   );

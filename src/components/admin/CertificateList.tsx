@@ -29,7 +29,7 @@ export default function CertificateList({ certificates, onEdit, className, ...pr
     setLoading(id);
     try {
       const res = await fetch(`/api/certificates/${id}`, {
-        method: 'DELETE',
+        method: 'DELETE'
       });
       
       if (!res.ok) throw new Error('Failed to delete certificate');
