@@ -17,6 +17,11 @@ export default function CertificatesPage() {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    const updatedCertificates = certificates.filter(certificate => certificate.id !== id);
+    setCertificates(updatedCertificates);
+  };
+
   useEffect(() => {
     loadCertificates();
   }, []);
@@ -33,7 +38,7 @@ export default function CertificatesPage() {
         <div className="lg:col-span-2">
           <Card className="p-6 overflow-hidden">
             <div className="overflow-x-auto">
-              <CertificateList certificates={certificates} />
+              <CertificateList certificates={certificates} onDelete={handleDelete} />
             </div>
           </Card>
         </div>

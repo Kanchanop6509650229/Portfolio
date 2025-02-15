@@ -8,9 +8,10 @@ import { Skill } from '@prisma/client';
 
 interface SkillListProps extends HTMLAttributes<HTMLDivElement> {
   skills: Skill[];
+  onDelete?: (id: number) => void;
 }
 
-export default function SkillList({ skills, className, ...props }: SkillListProps) {
+export default function SkillList({ skills, onDelete, className, ...props }: SkillListProps) {
   const router = useRouter();
   const [loading, setLoading] = useState<number | null>(null);
 
@@ -25,6 +26,7 @@ export default function SkillList({ skills, className, ...props }: SkillListProp
       
       if (!res.ok) throw new Error('Failed to delete skill');
       router.refresh();
+      onDelete?.(id);
     } catch (err) {
       console.error('Failed to delete skill:', err);
       alert('Failed to delete skill');

@@ -8,9 +8,10 @@ import { Certificate } from '@prisma/client';
 
 interface CertificateListProps extends HTMLAttributes<HTMLDivElement> {
   certificates: Certificate[];
+  onDelete?: (id: number) => void;
 }
 
-export default function CertificateList({ certificates, className, ...props }: CertificateListProps) {
+export default function CertificateList({ certificates, onDelete, className, ...props }: CertificateListProps) {
   const router = useRouter();
   const [loading, setLoading] = useState<number | null>(null);
 
@@ -25,6 +26,7 @@ export default function CertificateList({ certificates, className, ...props }: C
       
       if (!res.ok) throw new Error('Failed to delete certificate');
       router.refresh();
+      onDelete?.(id);
     } catch (err) {
       console.error('Failed to delete certificate:', err);
       alert('Failed to delete certificate');

@@ -17,6 +17,11 @@ export default function SkillsPage() {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    const updatedSkills = skills.filter(skill => skill.id !== id);
+    setSkills(updatedSkills);
+  };
+
   useEffect(() => {
     loadSkills();
   }, []);
@@ -33,7 +38,7 @@ export default function SkillsPage() {
         <div className="lg:col-span-2">
           <Card className="p-6 overflow-hidden">
             <div className="overflow-x-auto">
-              <SkillList skills={skills} />
+              <SkillList skills={skills} onDelete={handleDelete} />
             </div>
           </Card>
         </div>

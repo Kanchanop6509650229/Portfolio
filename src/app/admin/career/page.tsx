@@ -17,6 +17,11 @@ export default function CareerPage() {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    const updatedCareers = careers.filter(career => career.id !== id);
+    setCareers(updatedCareers);
+  };
+
   useEffect(() => {
     loadCareers();
   }, []);
@@ -33,7 +38,7 @@ export default function CareerPage() {
         <div className="lg:col-span-2">
           <Card className="p-6 overflow-hidden">
             <div className="overflow-x-auto">
-              <CareerList careers={careers} />
+              <CareerList careers={careers} onDelete={handleDelete} />
             </div>
           </Card>
         </div>

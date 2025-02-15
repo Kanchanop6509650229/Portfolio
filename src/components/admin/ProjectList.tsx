@@ -1,15 +1,17 @@
 'use client';
 
+import type { HTMLAttributes } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Project } from '@prisma/client';
 import { FiEdit2, FiTrash2, FiEye } from 'react-icons/fi';
 
-interface ProjectListProps {
+interface ProjectListProps extends HTMLAttributes<HTMLDivElement> {
   projects: Project[];
+  onDelete?: (id: number) => void;
 }
 
-export default function ProjectList({ projects }: ProjectListProps) {
+export default function ProjectList({ projects, onDelete, className, ...props }: ProjectListProps) {
   const router = useRouter();
   const [loading, setLoading] = useState<number | null>(null);
 
@@ -24,6 +26,7 @@ export default function ProjectList({ projects }: ProjectListProps) {
       
       if (!res.ok) throw new Error('Failed to delete project');
       router.refresh();
+      onDelete?.(id);
     } catch (err) {
       console.error('Failed to delete project:', err);
       alert('Failed to delete project');
@@ -33,7 +36,7 @@ export default function ProjectList({ projects }: ProjectListProps) {
   }
 
   return (
-    <div className="divide-y divide-gray-200 dark:divide-gray-700">
+    <div className={`divide-y divide-gray-200 dark:divide-gray-700 ${className || ''}`} {...props}>
       {projects.map((project) => (
         <div 
           key={project.id}

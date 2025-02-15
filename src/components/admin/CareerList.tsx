@@ -8,9 +8,10 @@ import { Career } from '@prisma/client';
 
 interface CareerListProps extends HTMLAttributes<HTMLDivElement> {
   careers: Career[];
+  onDelete?: (id: number) => void;
 }
 
-export default function CareerList({ careers, className, ...props }: CareerListProps) {
+export default function CareerList({ careers, onDelete, className, ...props }: CareerListProps) {
   const router = useRouter();
   const [loading, setLoading] = useState<number | null>(null);
 
@@ -25,6 +26,7 @@ export default function CareerList({ careers, className, ...props }: CareerListP
       
       if (!res.ok) throw new Error('Failed to delete career entry');
       router.refresh();
+      onDelete?.(id);
     } catch (err) {
       console.error('Failed to delete career entry:', err);
       alert('Failed to delete career entry');
