@@ -47,7 +47,7 @@ export default function CareerForm({ experience = null, onSuccess = () => {} }: 
 
     try {
       const url = experience ? `/api/career/${experience.id}` : '/api/career';
-      const method = experience ? 'PUT' : 'POST';
+      const method = experience ? 'PATCH' : 'POST';
 
       const response = await fetch(url, {
         method,

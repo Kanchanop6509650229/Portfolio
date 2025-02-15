@@ -46,7 +46,7 @@ export default function CertificateForm({ certificate = null, onSuccess = () => 
 
     try {
       const url = certificate ? `/api/certificates/${certificate.id}` : '/api/certificates';
-      const method = certificate ? 'PUT' : 'POST';
+      const method = certificate ? 'PATCH' : 'POST';
 
       const response = await fetch(url, {
         method,
