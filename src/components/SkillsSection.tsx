@@ -1,11 +1,25 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
-import * as SiIcons from 'react-icons/si';
+import * as AiIcons from 'react-icons/ai';
+import * as BsIcons from 'react-icons/bs';
+import * as BiIcons from 'react-icons/bi';
 import * as DiIcons from 'react-icons/di';
 import * as FaIcons from 'react-icons/fa';
+import * as FcIcons from 'react-icons/fc';
+import * as FiIcons from 'react-icons/fi';
+import * as GiIcons from 'react-icons/gi';
+import * as GoIcons from 'react-icons/go';
+import * as GrIcons from 'react-icons/gr';
+import * as HiIcons from 'react-icons/hi';
+import * as ImIcons from 'react-icons/im';
 import * as IoIcons from 'react-icons/io';
 import * as Io5Icons from 'react-icons/io5';
-import * as BiIcons from 'react-icons/bi';
+import * as MdIcons from 'react-icons/md';
 import * as RiIcons from 'react-icons/ri';
+import * as SiIcons from 'react-icons/si';
+import * as TiIcons from 'react-icons/ti';
+import * as VscIcons from 'react-icons/vsc';
+import * as TbIcons from 'react-icons/tb';
+import * as TfiIcons from 'react-icons/tfi';
 import { VscCode } from 'react-icons/vsc';
 import { useEffect, useState } from 'react';
 import { getSkills } from '@/lib/api';
@@ -25,36 +39,48 @@ interface ProcessedSkill {
 }
 
 // Combine all icon sets
-const allIcons: { [key: string]: IconType } = {
-  ...SiIcons,
+const allIcons = {
+  ...AiIcons,
+  ...BsIcons,
+  ...BiIcons,
   ...DiIcons,
   ...FaIcons,
+  ...FcIcons,
+  ...FiIcons,
+  ...GiIcons,
+  ...GoIcons,
+  ...GrIcons,
+  ...HiIcons,
+  ...ImIcons,
   ...IoIcons,
   ...Io5Icons,
-  ...BiIcons,
+  ...MdIcons,
   ...RiIcons,
+  ...SiIcons,
+  ...TiIcons,
+  ...VscIcons,
+  ...TbIcons,
+  ...TfiIcons,
 };
 
-// Function to find the best matching icon for a skill
 const findIcon = (skillName: string): IconType => {
-  // Try different icon naming patterns
-  const possibleNames = [
-    `Si${skillName.replace(/[^a-zA-Z0-9]/g, '')}`,
-    `Di${skillName.replace(/[^a-zA-Z0-9]/g, '')}`,
-    `Fa${skillName.replace(/[^a-zA-Z0-9]/g, '')}`,
-    `Io${skillName.replace(/[^a-zA-Z0-9]/g, '')}`,
-    `Ri${skillName.replace(/[^a-zA-Z0-9]/g, '')}`
-  ];
 
-  // Find the first matching icon
+  const cleanedName = skillName.replace(/[^a-zA-Z0-9]/g, '');
+
+  const prefixes = [
+    'Ai', 'Bs', 'Bi', 'Di', 'Fa', 'Fc', 'Fi', 'Gi', 'Go', 'Gr',
+    'Hi', 'Im', 'Io', 'Io5', 'Md', 'Ri', 'Si', 'Ti', 'Vsc', 'Tb', 'Tfi'
+  ];
+  
+  const possibleNames = prefixes.map(prefix => `${prefix}${cleanedName}`);
+  
   for (const name of possibleNames) {
     if (allIcons[name]) {
       return allIcons[name];
     }
   }
-
-  // Return default icon if no match found
-  return VscCode;
+  
+  return VscIcons.VscCode;
 };
 
 // Dynamic icon mapping
@@ -86,7 +112,9 @@ const iconMap: IconMapInterface = {
   Git: SiIcons.SiGit,
   Docker: SiIcons.SiDocker,
   get(name: string): IconType {
-    return (name in this && this[name] !== this.get) ? (this[name] as IconType) : findIcon(name);
+    return (name in this && this[name] !== this.get)
+      ? (this[name] as IconType)
+      : findIcon(name);
   }
 };
 
