@@ -4,23 +4,13 @@ import type { HTMLAttributes } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiEdit2, FiTrash2, FiEye } from 'react-icons/fi';
-
-interface Career {
-  id: number;
-  degree: string;
-  university: string;
-  startDate: string;
-  endDate: string | null;
-  description: string;
-  current: boolean;
-}
+import { Career } from '@prisma/client';
 
 interface CareerListProps extends HTMLAttributes<HTMLDivElement> {
   careers: Career[];
-  onEdit: (career: Career) => void;
 }
 
-export default function CareerList({ careers, onEdit, className, ...props }: CareerListProps) {
+export default function CareerList({ careers, className, ...props }: CareerListProps) {
   const router = useRouter();
   const [loading, setLoading] = useState<number | null>(null);
 
@@ -58,12 +48,12 @@ export default function CareerList({ careers, onEdit, className, ...props }: Car
               <p className="mt-1 text-sm text-cyan-600 dark:text-cyan-400">
                 {career.university}
               </p>
-              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 {new Date(career.startDate).toLocaleDateString('en-US', { 
                   month: 'long', 
                   year: 'numeric' 
                 })} - {
-                  career.current ? 'Present' : career.endDate ? new Date(career.endDate).toLocaleDateString('en-US', { 
+                  career.endDate ? new Date(career.endDate).toLocaleDateString('en-US', { 
                     month: 'long', 
                     year: 'numeric' 
                   }) : 'Present'
@@ -82,7 +72,7 @@ export default function CareerList({ careers, onEdit, className, ...props }: Car
                 <FiEye className="w-5 h-5" />
               </button>
               <button
-                onClick={() => onEdit(career)}
+                onClick={() => router.push(`/admin/career/edit/${career.id}`)}
                 title="Edit"
                 className="p-2 text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               >
@@ -92,7 +82,7 @@ export default function CareerList({ careers, onEdit, className, ...props }: Car
                 onClick={() => handleDelete(career.id)}
                 disabled={loading === career.id}
                 title="Delete"
-                className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <FiTrash2 className="w-5 h-5" />
               </button>

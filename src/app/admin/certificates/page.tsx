@@ -4,19 +4,10 @@ import { useState, useEffect } from 'react';
 import CertificateForm from '@/components/admin/CertificateForm';
 import CertificateList from '@/components/admin/CertificateList';
 import { Card } from '@/components/ui/Card';
-
-interface Certificate {
-  id: number;
-  name: string;
-  issuer: string;
-  issueDate: string;
-  expiryDate: string | null;
-  credentialUrl: string | null;
-}
+import { Certificate } from '@prisma/client';
 
 export default function CertificatesPage() {
   const [certificates, setCertificates] = useState<Certificate[]>([]);
-  const [editingCertificate, setEditingCertificate] = useState<Certificate | null>(null);
 
   const loadCertificates = async () => {
     const response = await fetch('/api/certificates');
@@ -42,10 +33,7 @@ export default function CertificatesPage() {
         <div className="lg:col-span-2">
           <Card className="p-6 overflow-hidden">
             <div className="overflow-x-auto">
-              <CertificateList 
-                certificates={certificates} 
-                onEdit={setEditingCertificate} 
-              />
+              <CertificateList certificates={certificates} />
             </div>
           </Card>
         </div>
@@ -53,13 +41,12 @@ export default function CertificatesPage() {
         <div>
           <Card className="p-6 sticky top-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
-              {editingCertificate ? 'Edit Certificate' : 'Add New Certificate'}
+              Add New Certificate
             </h3>
             <CertificateForm
-              certificate={editingCertificate}
+              certificate={null}
               onSuccess={() => {
                 loadCertificates();
-                setEditingCertificate(null);
               }}
             />
           </Card>

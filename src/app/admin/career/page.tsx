@@ -4,20 +4,10 @@ import { useState, useEffect } from 'react';
 import CareerForm from '@/components/admin/CareerForm';
 import CareerList from '@/components/admin/CareerList';
 import { Card } from '@/components/ui/Card';
-
-interface Career {
-  id: number;
-  degree: string;
-  university: string;
-  startDate: string;
-  endDate: string | null;
-  description: string;
-  current: boolean;
-}
+import { Career } from '@prisma/client';
 
 export default function CareerPage() {
   const [careers, setCareers] = useState<Career[]>([]);
-  const [editingCareer, setEditingCareer] = useState<Career | null>(null);
 
   const loadCareers = async () => {
     const response = await fetch('/api/career');
@@ -43,10 +33,7 @@ export default function CareerPage() {
         <div className="lg:col-span-2">
           <Card className="p-6 overflow-hidden">
             <div className="overflow-x-auto">
-              <CareerList 
-                careers={careers} 
-                onEdit={setEditingCareer} 
-              />
+              <CareerList careers={careers} />
             </div>
           </Card>
         </div>
@@ -54,13 +41,12 @@ export default function CareerPage() {
         <div>
           <Card className="p-6 sticky top-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
-              {editingCareer ? 'Edit Career Entry' : 'Add New Career Entry'}
+              Add New Career Entry
             </h3>
             <CareerForm
-              experience={editingCareer}
+              experience={null}
               onSuccess={() => {
                 loadCareers();
-                setEditingCareer(null);
               }}
             />
           </Card>

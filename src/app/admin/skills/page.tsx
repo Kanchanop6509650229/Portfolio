@@ -4,17 +4,10 @@ import { useState, useEffect } from 'react';
 import SkillForm from '@/components/admin/SkillForm';
 import SkillList from '@/components/admin/SkillList';
 import { Card } from '@/components/ui/Card';
-
-interface Skill {
-  id: number;
-  name: string;
-  category: string;
-  proficiency: number;
-}
+import { Skill } from '@prisma/client';
 
 export default function SkillsPage() {
   const [skills, setSkills] = useState<Skill[]>([]);
-  const [editingSkill, setEditingSkill] = useState<Skill | null>(null);
 
   const loadSkills = async () => {
     const response = await fetch('/api/skills');
@@ -40,10 +33,7 @@ export default function SkillsPage() {
         <div className="lg:col-span-2">
           <Card className="p-6 overflow-hidden">
             <div className="overflow-x-auto">
-              <SkillList 
-                skills={skills} 
-                onEdit={setEditingSkill} 
-              />
+              <SkillList skills={skills} />
             </div>
           </Card>
         </div>
@@ -51,13 +41,12 @@ export default function SkillsPage() {
         <div>
           <Card className="p-6 sticky top-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
-              {editingSkill ? 'Edit Skill' : 'Add New Skill'}
+              Add New Skill
             </h3>
             <SkillForm
-              skill={editingSkill}
+              skill={null}
               onSuccess={() => {
                 loadSkills();
-                setEditingSkill(null);
               }}
             />
           </Card>

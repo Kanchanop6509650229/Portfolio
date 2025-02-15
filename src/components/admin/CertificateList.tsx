@@ -4,22 +4,13 @@ import type { HTMLAttributes } from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { FiEdit2, FiTrash2, FiExternalLink, FiEye } from 'react-icons/fi';
-
-interface Certificate {
-  id: number;
-  name: string;
-  issuer: string;
-  issueDate: string;
-  expiryDate: string | null;
-  credentialUrl: string | null;
-}
+import { Certificate } from '@prisma/client';
 
 interface CertificateListProps extends HTMLAttributes<HTMLDivElement> {
   certificates: Certificate[];
-  onEdit: (certificate: Certificate) => void;
 }
 
-export default function CertificateList({ certificates, onEdit, className, ...props }: CertificateListProps) {
+export default function CertificateList({ certificates, className, ...props }: CertificateListProps) {
   const router = useRouter();
   const [loading, setLoading] = useState<number | null>(null);
 
@@ -57,9 +48,15 @@ export default function CertificateList({ certificates, onEdit, className, ...pr
               <p className="mt-1 text-sm text-cyan-600 dark:text-cyan-400">
                 {cert.issuer}
               </p>
-              <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                Issued: {new Date(cert.issueDate).toLocaleDateString()}
-                {cert.expiryDate && ` · Expires: ${new Date(cert.expiryDate).toLocaleDateString()}`}
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                Issued: {new Date(cert.issueDate).toLocaleDateString('en-US', { 
+                  month: 'long', 
+                  year: 'numeric' 
+                })}
+                {cert.expiryDate && ` • Expires: ${new Date(cert.expiryDate).toLocaleDateString('en-US', { 
+                  month: 'long', 
+                  year: 'numeric' 
+                })}`}
               </p>
             </div>
             <div className="ml-4 flex items-center gap-2">
@@ -70,29 +67,29 @@ export default function CertificateList({ certificates, onEdit, className, ...pr
               >
                 <FiEye className="w-5 h-5" />
               </button>
+              <button
+                onClick={() => router.push(`/admin/certificates/edit/${cert.id}`)}
+                title="Edit"
+                className="p-2 text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+              >
+                <FiEdit2 className="w-5 h-5" />
+              </button>
               {cert.credentialUrl && (
                 <a
                   href={cert.credentialUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  title="View Certificate"
+                  title="View Credential"
                   className="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                 >
                   <FiExternalLink className="w-5 h-5" />
                 </a>
               )}
               <button
-                onClick={() => onEdit(cert)}
-                title="Edit"
-                className="p-2 text-gray-500 hover:text-green-600 dark:text-gray-400 dark:hover:text-green-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              >
-                <FiEdit2 className="w-5 h-5" />
-              </button>
-              <button
                 onClick={() => handleDelete(cert.id)}
                 disabled={loading === cert.id}
                 title="Delete"
-                className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                className="p-2 text-gray-500 hover:text-red-600 dark:text-gray-400 dark:hover:text-red-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <FiTrash2 className="w-5 h-5" />
               </button>
@@ -100,7 +97,6 @@ export default function CertificateList({ certificates, onEdit, className, ...pr
           </div>
         </div>
       ))}
-
       {certificates.length === 0 && (
         <div className="py-6 text-center text-gray-500 dark:text-gray-400">
           No certificates found. Create your first certificate!
