@@ -85,3 +85,23 @@
   );
   border-color: rgba(103, 232, 249, 0.2);
 }
+
+@keyframes rotatePhone {
+  0% {
+    transform: rotate(0deg);
+  }
+  40% {
+    transform: rotate(0deg);
+  }
+  60% {
+    transform: rotate(90deg);
+  }
+  100% {
+    transform: rotate(90deg);
+  }
+}
+
+.rotate-phone-animation {
+  display: inline-block;
+  animation: rotatePhone 4s ease-in-out infinite;
+}

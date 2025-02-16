@@ -61,23 +61,23 @@ const EducationSection = () => {
   ].sort((a, b) => a.date.getTime() - b.date.getTime());
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 py-20" id="education">
-      <div className="max-w-7xl mx-auto px-4">
+    <section className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 py-12 sm:py-20" id="education">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-8 sm:mb-16"
         >
-          <h2 className="text-5xl font-bold animate-gradient bg-gradient-to-r from-emerald-400 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold animate-gradient bg-gradient-to-r from-emerald-400 via-cyan-500 to-blue-600 bg-clip-text text-transparent">
             Learning Roadmap
           </h2>
-          <p className="text-gray-400 mt-4 text-lg">My journey through education and growth</p>
+          <p className="text-gray-400 mt-2 sm:mt-4 text-base sm:text-lg">My journey through education and growth</p>
         </motion.div>
 
         <div className="relative">
-          {/* Vertical timeline line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-emerald-500 via-cyan-500 to-blue-500"></div>
+          {/* Vertical timeline line - hidden on mobile */}
+          <div className="hidden sm:block absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-emerald-500 via-cyan-500 to-blue-500"></div>
 
           {timelineItems.map((item, index) => (
             <motion.div
@@ -85,20 +85,20 @@ const EducationSection = () => {
               initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: index * 0.2 }}
-              className={`relative flex ${index % 2 === 0 ? 'justify-end' : ''} mb-8`}
+              className={`relative flex flex-col sm:flex-row ${index % 2 === 0 ? 'sm:justify-end' : ''} mb-8`}
             >
-              <div className={`w-1/2 ${index % 2 === 0 ? 'pr-12 text-right' : 'pl-12'}`}>
-                <div className="glass-effect tech-border p-6 rounded-lg group hover:shadow-lg transition-all duration-300">
+              <div className={`w-full sm:w-1/2 ${index % 2 === 0 ? 'sm:pr-12 sm:text-right' : 'sm:pl-12'} px-4`}>
+                <div className="glass-effect tech-border p-4 sm:p-6 rounded-lg group hover:shadow-lg transition-all duration-300">
                   {item.type === 'career' ? (
                     <div className="flex flex-col gap-2">
                       <span className="text-sm font-medium text-emerald-400">Education</span>
-                      <h3 className="text-xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-emerald-400 group-hover:to-cyan-500 group-hover:bg-clip-text transition-all duration-300">
+                      <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-emerald-400 group-hover:to-cyan-500 group-hover:bg-clip-text transition-all duration-300">
                         {item.data.degree}
                       </h3>
-                      <h4 className="text-lg font-semibold text-cyan-400">
+                      <h4 className="text-base sm:text-lg font-semibold text-cyan-400">
                         {item.data.university}
                       </h4>
-                      <p className="text-gray-400 text-sm">
+                      <p className="text-gray-400 text-xs sm:text-sm">
                         {new Date(item.data.startDate).toLocaleDateString('en-US', { 
                           month: 'long', 
                           year: 'numeric' 
@@ -109,18 +109,18 @@ const EducationSection = () => {
                           }) : 'Present'
                         }
                       </p>
-                      <p className="text-gray-300 mt-2">{item.data.description}</p>
+                      <p className="text-gray-300 mt-2 text-sm sm:text-base">{item.data.description}</p>
                     </div>
                   ) : (
                     <div className="flex flex-col gap-2">
                       <span className="text-sm font-medium text-blue-400">Certification</span>
-                      <h3 className="text-xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-500 group-hover:bg-clip-text transition-all duration-300">
+                      <h3 className="text-lg sm:text-xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-500 group-hover:bg-clip-text transition-all duration-300">
                         {item.data.name}
                       </h3>
-                      <h4 className="text-lg font-semibold text-cyan-400">
+                      <h4 className="text-base sm:text-lg font-semibold text-cyan-400">
                         {item.data.issuer}
                       </h4>
-                      <div className="text-gray-400 text-sm space-y-1">
+                      <div className="text-gray-400 text-xs sm:text-sm space-y-1">
                         <p>Issued: {new Date(item.data.issueDate).toLocaleDateString('en-US', { 
                           month: 'long', 
                           year: 'numeric' 
@@ -161,8 +161,8 @@ const EducationSection = () => {
                 </div>
               </div>
 
-              {/* Timeline dot */}
-              <div className={`absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full ${
+              {/* Timeline dot - adjusted for mobile */}
+              <div className={`hidden sm:block absolute left-1/2 transform -translate-x-1/2 w-4 h-4 rounded-full ${
                 item.type === 'career' 
                   ? 'bg-gradient-to-r from-emerald-500 to-cyan-500' 
                   : 'bg-gradient-to-r from-cyan-500 to-blue-500'
