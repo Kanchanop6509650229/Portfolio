@@ -30,7 +30,7 @@ const ProjectCard = ({
       ? "min-w-[450px] w-[450px]"
       : "min-w-[480px] w-[480px]";
 
-  const cardHeight = index % 2 === 0 ? "h-[320px]" : "h-[300px]";
+  const cardHeight = index % 2 === 0 ? "h-[360px]" : "h-[340px]";
 
   // Different transform effects based on index
   const hoverRotate =
@@ -89,7 +89,7 @@ const ProjectCard = ({
             >
               {project.title}
             </motion.h3>
-            <p className="text-gray-300 line-clamp-2">{project.description}</p>
+            <p className="text-gray-300 line-clamp-3 mb-4">{project.description}</p>
           </div>
 
           <div className="space-y-4">
