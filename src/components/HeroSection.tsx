@@ -59,7 +59,7 @@ const HeroSection = () => {
           whileInView={{ y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Kanchanop Buarod
+          Your name
         </motion.h1>
         
         <motion.p 
