@@ -54,12 +54,13 @@ const HeroSection = () => {
         className="text-center space-y-4 sm:space-y-8 relative z-10 [text-shadow:none]"
       >
         <motion.h1 
-          className="text-4xl sm:text-6xl md:text-7.5xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-gradient"
+          className="text-6xl md:text-8xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-gradient"
           initial={{ y: 20 }}
           whileInView={{ y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Your name
+          <span className="block sm:inline">Your</span>{' '}
+          <span className="block sm:inline">Name</span>
         </motion.h1>
         
         <motion.p 
