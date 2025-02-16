@@ -89,7 +89,7 @@ const ProjectCard = ({
             >
               {project.title}
             </motion.h3>
-            <p className="text-gray-300 line-clamp-3 mb-4">{project.description}</p>
+            <p className="text-gray-300 line-clamp-4 mb-4">{project.description}</p>
           </div>
 
           <div className="space-y-4">
