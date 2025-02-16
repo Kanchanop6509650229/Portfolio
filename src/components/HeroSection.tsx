@@ -8,7 +8,7 @@ const HeroSection = () => {
   return (
     <section 
       id="top"
-      className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden" 
+      className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 snap-start flex items-center justify-center relative overflow-hidden px-4 sm:px-6" 
     >
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-50">
         <motion.div
@@ -51,19 +51,19 @@ const HeroSection = () => {
 
       <motion.div
         style={{ scale, opacity }}
-        className="text-center space-y-8 relative z-10 [text-shadow:none]"
+        className="text-center space-y-4 sm:space-y-8 relative z-10 [text-shadow:none]"
       >
         <motion.h1 
-          className="text-8xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-gradient"
+          className="text-4xl sm:text-6xl md:text-8xl font-bold bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent animate-gradient"
           initial={{ y: 20 }}
           whileInView={{ y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          Your Name
+          Kanchanop Buarod
         </motion.h1>
         
         <motion.p 
-          className="text-3xl text-gray-300"
+          className="text-xl sm:text-2xl md:text-3xl text-gray-300"
           initial={{ y: 20, opacity: 0 }}
           whileInView={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
@@ -76,8 +76,8 @@ const HeroSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <div className="glass-effect tech-pattern matrix-overlay tech-border glow-effect cyber-pulse p-4 rounded-xl inline-block">
-            <p className="text-gray-300 text-lg">Crafting digital experiences with modern technologies</p>
+          <div className="glass-effect tech-pattern matrix-overlay tech-border glow-effect cyber-pulse p-3 sm:p-4 rounded-xl inline-block">
+            <p className="text-gray-300 text-base sm:text-lg">Crafting digital experiences with modern technologies</p>
           </div>
         </motion.div>
       </motion.div>
