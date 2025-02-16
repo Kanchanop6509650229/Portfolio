@@ -4,12 +4,14 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  _req: NextRequest,
+  context: { params: { id: string } }
 ) {
+  const { id } = await Promise.resolve(context.params);
+  
   try {
     const career = await prisma.career.findUnique({
-      where: { id: parseInt(params.id) }
+      where: { id: parseInt(id) }
     });
     if (!career) {
       return NextResponse.json({ error: 'Career entry not found' }, { status: 404 });
@@ -23,19 +25,20 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
+  const { id } = await Promise.resolve(context.params);
+  
   try {
     const data = await req.json();
     const career = await prisma.career.update({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
       data: {
         degree: data.degree,
         university: data.university,
         startDate: new Date(data.startDate),
         endDate: data.endDate ? new Date(data.endDate) : null,
-        description: data.description,
-        current: data.current
+        description: data.description
       }
     });
     return NextResponse.json(career);
@@ -46,12 +49,14 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  _req: NextRequest,
+  context: { params: { id: string } }
 ) {
+  const { id } = await Promise.resolve(context.params);
+  
   try {
     await prisma.career.delete({
-      where: { id: parseInt(params.id) }
+      where: { id: parseInt(id) }
     });
     return NextResponse.json({ success: true });
   } catch (error) {
