@@ -42,7 +42,7 @@ const Navbar = () => {
     }
   };
 
-  // Update active section based on scroll position
+  // Update active section based on scroll university
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
