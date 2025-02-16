@@ -118,7 +118,6 @@ const iconMap: IconMapInterface = {
   Kubernetes: SiIcons.SiKubernetes,
   AWS: SiIcons.SiAmazon,
   'Google Cloud': SiIcons.SiGooglecloud,
-  Azure: SiIcons.SiAzurepipelines,
   Firebase: SiIcons.SiFirebase,
   Redux: SiIcons.SiRedux,
   'Next.js': SiIcons.SiNextdotjs,
