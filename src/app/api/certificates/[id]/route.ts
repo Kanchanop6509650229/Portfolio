@@ -4,12 +4,14 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  _req: NextRequest,
+  context: { params: { id: string } }
 ) {
+  const { id } = await Promise.resolve(context.params);
+  
   try {
     const certificate = await prisma.certificate.findUnique({
-      where: { id: parseInt(params.id) }
+      where: { id: parseInt(id) }
     });
     if (!certificate) {
       return NextResponse.json({ error: 'Certificate not found' }, { status: 404 });
@@ -23,12 +25,14 @@ export async function GET(
 
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
+  const { id } = await Promise.resolve(context.params);
+  
   try {
     const data = await req.json();
     const certificate = await prisma.certificate.update({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
       data: {
         name: data.name,
         issuer: data.issuer,
@@ -45,12 +49,14 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
+  _req: NextRequest,
+  context: { params: { id: string } }
 ) {
+  const { id } = await Promise.resolve(context.params);
+  
   try {
     await prisma.certificate.delete({
-      where: { id: parseInt(params.id) }
+      where: { id: parseInt(id) }
     });
     return NextResponse.json({ success: true });
   } catch (error) {
