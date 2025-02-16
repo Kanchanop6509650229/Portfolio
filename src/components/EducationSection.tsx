@@ -58,7 +58,7 @@ const EducationSection = () => {
       date: new Date(cert.issueDate),
       data: cert,
     }))
-  ].sort((a, b) => b.date.getTime() - a.date.getTime());
+  ].sort((a, b) => a.date.getTime() - b.date.getTime());
 
   return (
     <section className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 py-20" id="education">
