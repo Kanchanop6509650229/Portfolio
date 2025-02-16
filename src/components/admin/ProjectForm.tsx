@@ -2,7 +2,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function ProjectForm() {
+interface ProjectFormProps {
+  onSuccess?: () => void;
+}
+
+export default function ProjectForm({ onSuccess }: ProjectFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -31,6 +35,7 @@ export default function ProjectForm() {
       if (!res.ok) throw new Error('Failed to create project');
 
       router.refresh();
+      onSuccess?.();
       (e.target as HTMLFormElement).reset();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
