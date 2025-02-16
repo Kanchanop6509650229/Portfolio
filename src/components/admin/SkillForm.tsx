@@ -16,6 +16,9 @@ const SKILL_CATEGORIES = [
   'Programming Language',
   'Front-end',
   'Back-end',
+  'Database',
+  'DevOps & Deployment',
+  'AI-Tools',
   'Tools'
 ] as const;
 
