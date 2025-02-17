@@ -83,7 +83,7 @@ export default async function AdminDashboard() {
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Actions</h3>
           <div className="space-y-4">
             <Link 
-              href="/admin/projects/edit/new" 
+              href="/admin/projects" 
               className="block p-4 rounded-lg bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
             >
               Add New Project
