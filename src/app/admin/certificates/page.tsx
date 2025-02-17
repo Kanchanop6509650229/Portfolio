@@ -5,8 +5,11 @@ import CertificateForm from '@/components/admin/CertificateForm';
 import CertificateList from '@/components/admin/CertificateList';
 import { Card } from '@/components/ui/Card';
 import { Certificate } from '@prisma/client';
+import { useRouter } from 'next/navigation';
+import { FiArrowLeft } from 'react-icons/fi';
 
 export default function CertificatesPage() {
+  const router = useRouter();
   const [certificates, setCertificates] = useState<Certificate[]>([]);
 
   const loadCertificates = async () => {
@@ -29,9 +32,17 @@ export default function CertificatesPage() {
   return (
     <div className="space-y-8">
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400">
-          Certificates Management
-        </h2>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => router.push('/admin')}
+            className="p-2 text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          >
+            <FiArrowLeft className="w-5 h-5" />
+          </button>
+          <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400">
+            Certificates Management
+          </h2>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
