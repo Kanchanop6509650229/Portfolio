@@ -6,10 +6,11 @@ import ProjectForm from "@/components/admin/ProjectForm";
 import ProjectList from "@/components/admin/ProjectList";
 import { useRouter } from "next/navigation";
 import { FiArrowLeft } from "react-icons/fi";
+import { Project } from "@prisma/client";
 
 export default function ProjectsPage() {
   const router = useRouter();
-  const [projects, setProjects] = useState([]);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   const loadProjects = async () => {
     const response = await fetch("/api/projects");
@@ -63,7 +64,7 @@ export default function ProjectsPage() {
               <ul className="mt-2 ml-4 list-disc">
                 <li>Title should be concise and clear (max 20 characters)</li>
                 <li>
-                  Description should explain the project's purpose and key
+                  Description should explain the project&apos;s purpose and key
                   features (max 200 characters)
                 </li>
                 <li>
