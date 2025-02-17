@@ -89,10 +89,13 @@ const Navbar = () => {
 
   const menuVariants = {
     open: {
+      display: "block",
       opacity: 1,
       height: "auto",
       transition: {
-        duration: 0.4,
+        display: { delay: 0 },
+        height: { duration: 0.4 },
+        opacity: { duration: 0.4 },
         ease: "easeOut",
         staggerChildren: 0.1
       }
@@ -100,8 +103,10 @@ const Navbar = () => {
     closed: {
       opacity: 0,
       height: 0,
+      transitionEnd: { display: "none" },
       transition: {
-        duration: 0.3,
+        height: { duration: 0.3 },
+        opacity: { duration: 0.3 },
         ease: "easeIn"
       }
     }
@@ -214,38 +219,41 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Menu */}
-        <motion.div
-          className="md:hidden"
-          initial="closed"
-          animate={isMenuOpen ? "open" : "closed"}
-          variants={menuVariants}
-        >
-          <motion.div className="flex flex-col space-y-4 pt-4">
-            {navLinks.map((link) => (
-              <motion.div
-                key={link.href}
-                variants={{
-                  open: { opacity: 1, y: 0 },
-                  closed: { opacity: 0, y: -10 }
-                }}
-              >
-                <Link 
-                  href={link.href} 
-                  onClick={(e) => {
-                    handleClick(e, link.href);
-                    setIsMenuOpen(false);
+        {isMenuOpen && (
+          <motion.div
+            className="md:hidden"
+            initial="closed"
+            animate={isMenuOpen ? "open" : "closed"}
+            variants={menuVariants}
+          >
+            <motion.div className="flex flex-col space-y-4 pt-4">
+              {navLinks.map((link) => (
+                <motion.div
+                  key={link.href}
+                  variants={{
+                    open: { opacity: 1, y: 0 },
+                    closed: { opacity: 0, y: -10 }
                   }}
-                  className={`block py-2 px-4 rounded-lg text-sm uppercase tracking-wider transition-all duration-300
-                            ${activeSection === link.href.substring(1) 
-                              ? 'text-white bg-white/10' 
-                              : 'text-white/70 hover:text-white hover:bg-white/5'}`}
                 >
-                  {link.text}
-                </Link>
-              </motion.div>
-            ))}
+                  <Link 
+                    href={link.href} 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleClick(e, link.href);
+                      setIsMenuOpen(false);
+                    }}
+                    className={`block py-2 px-4 rounded-lg text-sm uppercase tracking-wider transition-all duration-300
+                              ${activeSection === link.href.substring(1) 
+                                ? 'text-white bg-white/10' 
+                                : 'text-white/70 hover:text-white hover:bg-white/5'}`}
+                  >
+                    {link.text}
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.div>
           </motion.div>
-        </motion.div>
+        )}
       </motion.div>
     </motion.nav>
   );

@@ -55,6 +55,7 @@ export default function ProjectForm({ onSuccess }: ProjectFormProps) {
           id="title"
           name="title"
           required
+          maxLength={20}
           className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
         />
       </div>
@@ -68,6 +69,7 @@ export default function ProjectForm({ onSuccess }: ProjectFormProps) {
           name="description"
           rows={4}
           required
+          maxLength={200}
           className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent resize-none"
         />
       </div>
@@ -81,6 +83,7 @@ export default function ProjectForm({ onSuccess }: ProjectFormProps) {
           id="technologies"
           name="technologies"
           required
+          maxLength={50}
           className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
         />
       </div>
