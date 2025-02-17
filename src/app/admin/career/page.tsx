@@ -46,7 +46,7 @@ export default function CareerPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 order-2 lg:order-1">
           <Card className="p-6 overflow-hidden">
             <div className="overflow-x-auto">
               <CareerList careers={careers} onDelete={handleDelete} />
@@ -54,7 +54,7 @@ export default function CareerPage() {
           </Card>
         </div>
 
-        <div>
+        <div className="order-1 lg:order-2">
           <Card className="p-6 sticky top-6">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
               Add New Career Entry
