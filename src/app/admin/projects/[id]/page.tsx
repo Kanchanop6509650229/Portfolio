@@ -70,7 +70,7 @@ export default function ViewProjectPage() {
       <Card className="p-6 space-y-6">
         <div>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Description</h3>
-          <p className="text-gray-600 dark:text-gray-400 whitespace-pre-wrap">{project.description}</p>
+          <p className="text-gray-600 dark:text-gray-400 whitespace-pre-wrap break-words">{project.description}</p>
         </div>
 
         <div>

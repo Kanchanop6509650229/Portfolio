@@ -83,7 +83,7 @@ export default function CareerView() {
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Description
             </label>
-            <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line">
+            <p className="text-sm text-gray-600 dark:text-gray-400 whitespace-pre-line break-words">
               {career.description}
             </p>
           </div>
