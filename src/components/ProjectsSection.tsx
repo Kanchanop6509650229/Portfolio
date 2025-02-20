@@ -180,10 +180,14 @@ const ProjectsSection = () => {
   }, []);
 
   const startAnimation = () => {
+    // Calculate duration based on number of projects
+    // Base duration of 15 seconds per project, with a minimum of 20 seconds
+    const baseDuration = Math.max(projects.length * 15, 20);
+    
     controls.start({
       x: "-50%",
       transition: {
-        duration: 40,
+        duration: baseDuration,
         repeat: Infinity,
         ease: "linear",
         repeatType: "loop",
@@ -192,12 +196,7 @@ const ProjectsSection = () => {
   };
 
   // Create infinite list by repeating projects
-  const infiniteProjects = [
-    ...projects,
-    ...projects,
-    ...projects,
-    ...projects,
-  ].filter((p) => p.featured);
+  const infiniteProjects = [...Array(4)].flatMap(() => projects).filter((p) => p.featured);
 
   return (
     <section
