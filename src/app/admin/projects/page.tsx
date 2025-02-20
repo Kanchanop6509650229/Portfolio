@@ -62,7 +62,7 @@ export default function ProjectsPage() {
                 are required.
               </p>
               <ul className="mt-2 ml-4 list-disc">
-                <li>Title should be concise and clear (max 20 characters)</li>
+                <li>Title should be concise and clear (max 50 characters)</li>
                 <li>
                   Description should explain the project&apos;s purpose and key
                   features (max 200 characters)
