@@ -8,7 +8,7 @@
 
 A modern, full-stack portfolio website built with Next.js, TypeScript, Tailwind CSS, and MySQL.
 
-🔗 **[Live Demo](https://portfolio.yourdomain.com)**
+🔗 **[Live Demo](http://52.184.82.67:3000/)**
 
 > 💻 **Best Experience:** Please use a tablet or desktop device for optimal viewing.
 
@@ -16,15 +16,14 @@ A modern, full-stack portfolio website built with Next.js, TypeScript, Tailwind 
 
 ## Screenshots
 
-> 📸 Add your screenshots here:
-> - Save portfolio screenshots in `/public/screenshots/`
-> - Recommended: Add images of home page, projects section, and admin dashboard
-> - Suggested format:
-> ```markdown
-> ![Home Page](/screenshots/home.png)
-> ![Projects](/screenshots/projects.png)
-> ![Admin Dashboard](/screenshots/admin.png)
-> ```
+![image](https://github.com/user-attachments/assets/eb6b1214-6f10-4c01-bb3c-a79ee281d9d5)
+
+![image](https://github.com/user-attachments/assets/f3328831-fee0-4d7a-9b40-9bdcc244631a)
+
+![image](https://github.com/user-attachments/assets/f80e1a60-62b9-40ad-97d4-9f3e8cc52fdb)
+
+![image](https://github.com/user-attachments/assets/0b13c82b-9b03-4563-a86d-448e1b1c2572)
+
 
 ## Features
 
