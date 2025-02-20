@@ -8,7 +8,7 @@
 
 A modern, full-stack portfolio website built with Next.js, TypeScript, Tailwind CSS, and MySQL.
 
-🔗 **[Live Demo](https://portfolio.yourdomain.com)**
+🔗 **[Live Demo](http://52.184.82.67:3000/)**
 
 > 💻 **Best Experience:** Please use a tablet or desktop device for optimal viewing.
 
@@ -143,7 +143,32 @@ npm run db:seed    # Seed the database with initial data
 
 ## Admin Dashboard
 
-The admin dashboard is accessible at `/admin` and includes:
+### Initial Login
+
+1. Configure admin credentials in `.env`:
+   ```
+   ADMIN_EMAIL="your-admin@email.com"
+   ADMIN_PASSWORD="your-secure-password"
+   ```
+
+2. Access the admin panel:
+   - Navigate to `/admin/login`
+   - Enter your configured email and password
+   - You will be redirected to the admin dashboard
+
+### Changing Admin Credentials
+
+1. **Via Database (Recommended)**:
+   - Open Prisma Studio: `npx prisma studio`
+   - Navigate to the `User` table
+   - Find your admin user
+   - Update email/password fields
+   - Note: Password must be hashed
+
+2. **Via Environment Variables**:
+   - Update `ADMIN_EMAIL` and `ADMIN_PASSWORD` in `.env`
+   - Restart the application
+   - New credentials will be synced on next startup
 
 ### Content Management
 - **Career Management**
@@ -167,6 +192,13 @@ The admin dashboard is accessible at `/admin` and includes:
 - Secure authentication
 - Admin-only access
 - Session management
+
+### Security Best Practices
+- Change default credentials immediately after deployment
+- Use a strong password (min. 12 characters)
+- Enable 2FA if configured
+- Regularly update credentials
+- Monitor login attempts in logs
 
 ### Best Practices
 - Mobile-responsive design

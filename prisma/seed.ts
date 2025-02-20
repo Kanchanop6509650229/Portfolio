@@ -4,14 +4,21 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  const hashedPassword = await bcrypt.hash('admin123', 10);
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+
+  if (!adminEmail || !adminPassword) {
+    throw new Error('ADMIN_EMAIL and ADMIN_PASSWORD must be set in .env file');
+  }
+
+  const hashedPassword = await bcrypt.hash(adminPassword, 10);
   
   // Create admin user if it doesn't exist
   const adminUser = await prisma.user.upsert({
-    where: { email: 'admin@example.com' },
+    where: { email: adminEmail },
     update: {},
     create: {
-      email: 'admin@example.com',
+      email: adminEmail,
       password: hashedPassword,
       name: 'Admin User',
       role: 'admin',
